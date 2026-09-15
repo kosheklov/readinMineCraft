@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Читаем по слогам</title>
-  <meta name="description" content="Детский тренажер чтения сложных слов по слогам с коллекцией Minecraft-наград.">
+  <meta name="description" content="Детский тренажер чтения по слогам с уровнями по возрасту и коллекцией Minecraft-наград.">
   <link rel="preload" as="image" href="assets/minecraft-chest.png">
   <link rel="preload" as="image" href="assets/minecraft-prizes-atlas.png">
   <link rel="preload" as="image" href="assets/minecraft-prizes-atlas-2.png">
@@ -92,11 +92,104 @@
       font-weight: 800;
     }
 
+    .top-tools {
+      display: grid;
+      justify-items: end;
+      gap: 9px;
+    }
+
+    .level-change {
+      padding: 8px 12px;
+      border: 2px solid rgba(53, 83, 44, 0.14);
+      border-radius: 10px;
+      background: rgba(255, 253, 244, 0.92);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .level-change:hover {
+      background: #f4edcf;
+      color: var(--ink);
+    }
+
+    .level-change:focus-visible,
+    .level-option:focus-visible {
+      outline: 5px solid rgba(241, 184, 59, 0.72);
+      outline-offset: 4px;
+    }
+
     .stage {
       display: grid;
       place-items: center;
       min-height: 356px;
       text-align: center;
+    }
+
+    .level-view {
+      width: 100%;
+      padding: clamp(26px, 4vw, 48px);
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: inset 0 0 0 2px rgba(36, 26, 18, 0.06);
+    }
+
+    .level-kicker {
+      margin: 0 0 10px;
+      color: var(--accent-dark);
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .level-copy {
+      margin: 12px auto 28px;
+      max-width: 44ch;
+      color: var(--muted);
+      font-size: clamp(17px, 2.2vw, 22px);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .level-options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .level-option {
+      min-height: 142px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 8px;
+      padding: 20px 14px;
+      border: 3px solid rgba(53, 83, 44, 0.13);
+      border-radius: 16px;
+      background: #f4edcf;
+      color: var(--ink);
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .level-option:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 24px rgba(53, 83, 44, 0.14);
+    }
+
+    .level-age {
+      font-size: clamp(26px, 3.4vw, 38px);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .level-detail {
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 800;
     }
 
     .word-card {
@@ -140,6 +233,11 @@
     .syllables.is-four {
       font-size: clamp(44px, 5.2vw, 74px);
       gap: clamp(5px, 1vw, 10px);
+    }
+
+    .syllables.is-long {
+      font-size: clamp(32px, 4.2vw, 60px);
+      gap: clamp(4px, 0.7vw, 8px);
     }
 
     .dash {
@@ -595,6 +693,28 @@
         align-items: flex-start;
       }
 
+      .title {
+        max-width: 7ch;
+      }
+
+      .level-change {
+        max-width: 120px;
+        font-size: 13px;
+      }
+
+      .level-options {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .level-option {
+        min-height: 96px;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 15px 18px;
+        text-align: left;
+      }
+
       .counter {
         min-width: 72px;
         padding: 10px 12px;
@@ -688,11 +808,34 @@
     <section class="trainer" aria-label="Тренажер чтения слов по слогам">
       <div class="top">
         <h1 class="title">Читаем и собираем</h1>
-        <div class="counter" aria-live="polite"><span id="score">0</span>/<span id="total">30</span></div>
+        <div class="top-tools">
+          <div class="counter" id="counter" aria-live="polite" hidden><span id="score">0</span>/<span id="total">30</span></div>
+          <button class="level-change" id="changeLevelButton" type="button" hidden>Сменить возраст</button>
+        </div>
       </div>
 
       <div class="stage">
-        <section class="screen word-card" id="wordView" aria-labelledby="wordHint">
+        <section class="screen level-view" id="levelView" aria-labelledby="levelTitle">
+          <p class="level-kicker">Новая игра</p>
+          <h2 class="screen-title" id="levelTitle">Выбери возраст</h2>
+          <p class="level-copy">Подберём подходящие слова. В каждой игре слова и Minecraft-призы идут в новом порядке.</p>
+          <div class="level-options" aria-label="Уровень сложности">
+            <button class="level-option" type="button" data-level="easy">
+              <span class="level-age">4–5 лет</span>
+              <span class="level-detail">короткие слова · 2 слога</span>
+            </button>
+            <button class="level-option" type="button" data-level="medium">
+              <span class="level-age">6–7 лет</span>
+              <span class="level-detail">средние слова · 3 слога</span>
+            </button>
+            <button class="level-option" type="button" data-level="hard">
+              <span class="level-age">8+ лет</span>
+              <span class="level-detail">длинные слова · 4–7 слогов</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="screen word-card" id="wordView" aria-labelledby="wordHint" hidden>
           <p class="hint" id="wordHint">Прочитай слово по слогам</p>
           <div class="syllables" id="syllables" aria-live="polite"></div>
         </section>
@@ -717,18 +860,18 @@
 
         <section class="screen collection-view" id="collectionView" aria-labelledby="finalTitle" hidden>
           <h2 class="screen-title" id="finalTitle" tabindex="-1">Все призы собраны!</h2>
-          <p class="screen-text">Ты прочитал 30 сложных слов и открыл всю коллекцию</p>
+          <p class="screen-text" id="finalSummary"></p>
           <ul class="full-collection" id="fullCollection"></ul>
         </section>
       </div>
 
       <div class="actions">
-        <button class="primary" id="readButton" type="button">Я прочитал</button>
+        <button class="primary" id="readButton" type="button" hidden>Я прочитал</button>
         <button class="secondary" id="nextButton" type="button" hidden>Следующее слово</button>
         <button class="secondary" id="restartButton" type="button" hidden>Начать заново</button>
       </div>
 
-      <section class="collection-shelf" id="collectionShelf" aria-labelledby="collectionTitle">
+      <section class="collection-shelf" id="collectionShelf" aria-labelledby="collectionTitle" hidden>
         <div class="collection-head">
           <h2 class="collection-title" id="collectionTitle">Мои Minecraft-призы</h2>
           <output class="collection-count" id="collectionCount" aria-live="polite">0 из 30</output>
@@ -738,7 +881,7 @@
         </ul>
       </section>
 
-      <div class="progress" aria-hidden="true">
+      <div class="progress" id="progressTrack" aria-hidden="true" hidden>
         <div class="progress-bar" id="progressBar"></div>
       </div>
 
@@ -747,38 +890,61 @@
   </main>
 
   <script>
-    const wordParts = [
-      ["ба", "на", "ны"],
-      ["бе", "рё", "за"],
-      ["бу", "ма", "га"],
-      ["ка", "ре", "та"],
-      ["ку", "ри", "ца"],
-      ["ло", "па", "та"],
-      ["ма", "ли", "на"],
-      ["по", "су", "да"],
-      ["пи", "ро", "ги"],
-      ["у", "лит", "ка"],
-      ["бе", "лоч", "ка"],
-      ["ба", "боч", "ка"],
-      ["ка", "пус", "та"],
-      ["те", "ле", "фон"],
-      ["че", "мо", "дан"],
-      ["са", "по", "ги"],
-      ["о", "гу", "рец"],
-      ["са", "мо", "кат"],
-      ["ма", "ка", "ро", "ны"],
-      ["че", "ре", "па", "ха"],
-      ["ба", "ле", "ри", "на"],
-      ["ве", "ло", "си", "пед"],
-      ["те", "ле", "ви", "зор"],
-      ["пи", "ра", "ми", "да"],
-      ["ку", "ку", "ру", "за"],
-      ["гу", "се", "ни", "ца"],
-      ["пу", "го", "ви", "ца"],
-      ["па", "ро", "во", "зик"],
-      ["а", "пель", "си", "ны"],
-      ["пе", "ре", "ме", "на"]
-    ];
+    const SESSION_WORD_COUNT = 30;
+
+    const difficulties = Object.freeze({
+      easy: { label: "4–5 лет", description: "короткие слова" },
+      medium: { label: "6–7 лет", description: "средние слова" },
+      hard: { label: "8+ лет", description: "длинные слова" }
+    });
+
+    const wordBanks = Object.freeze({
+      easy: [
+        ["ма", "ма"], ["па", "па"], ["ба", "ба"], ["де", "да"],
+        ["ва", "за"], ["ро", "за"], ["лу", "на"], ["зи", "ма"],
+        ["ле", "то"], ["ли", "са"], ["ко", "за"], ["со", "ва"],
+        ["му", "ха"], ["ры", "ба"], ["жа", "ба"], ["ут", "ка"],
+        ["бел", "ка"], ["мыш", "ка"], ["кош", "ка"], ["чаш", "ка"],
+        ["лож", "ка"], ["руч", "ка"], ["кни", "га"], ["пар", "та"],
+        ["сум", "ка"], ["шап", "ка"], ["но", "га"], ["ру", "ка"],
+        ["во", "да"], ["тра", "ва"], ["го", "ра"], ["ре", "ка"],
+        ["мо", "ре"], ["по", "ле"], ["са", "ды"], ["гри", "бы"]
+      ],
+      medium: [
+        ["ба", "на", "ны"], ["бе", "рё", "за"], ["бу", "ма", "га"],
+        ["ка", "ре", "та"], ["ку", "ри", "ца"], ["ло", "па", "та"],
+        ["ма", "ли", "на"], ["по", "су", "да"], ["пи", "ро", "ги"],
+        ["у", "лит", "ка"], ["бе", "лоч", "ка"], ["ба", "боч", "ка"],
+        ["ка", "пус", "та"], ["те", "ле", "фон"], ["че", "мо", "дан"],
+        ["са", "по", "ги"], ["о", "гу", "рец"], ["са", "мо", "кат"],
+        ["ко", "ро", "ва"], ["со", "ба", "ка"], ["во", "ро", "на"],
+        ["ма", "ши", "на"], ["до", "ро", "га"], ["де", "ре", "во"],
+        ["о", "зе", "ро"], ["ра", "ду", "га"], ["я", "бло", "ко"],
+        ["мо", "ло", "ко"], ["пи", "жа", "ма"], ["ра", "ке", "та"],
+        ["па", "ро", "ход"], ["па", "ро", "воз"], ["ба", "ра", "бан"],
+        ["са", "ра", "фан"], ["по", "ми", "дор"], ["му", "ра", "вей"]
+      ],
+      hard: [
+        ["ма", "ка", "ро", "ны"], ["че", "ре", "па", "ха"],
+        ["ба", "ле", "ри", "на"], ["ве", "ло", "си", "пед"],
+        ["те", "ле", "ви", "зор"], ["пи", "ра", "ми", "да"],
+        ["ку", "ку", "ру", "за"], ["гу", "се", "ни", "ца"],
+        ["пу", "го", "ви", "ца"], ["па", "ро", "во", "зик"],
+        ["а", "пель", "си", "ны"], ["пе", "ре", "ме", "на"],
+        ["ак", "ва", "ри", "ум"], ["хо", "ло", "диль", "ник"],
+        ["э", "лек", "трич", "ка"], ["фо", "то", "ап", "па", "рат"],
+        ["би", "бли", "о", "те", "ка"], ["ма", "те", "ма", "ти", "ка"],
+        ["ли", "те", "ра", "ту", "ра"], ["гим", "на", "сти", "ка"],
+        ["ав", "то", "мо", "биль"], ["экс", "ка", "ва", "тор"],
+        ["о", "ке", "а", "на", "ри", "ум"], ["по", "пу", "гай", "чик"],
+        ["не", "за", "буд", "ка"], ["ка", "ран", "да", "шик"],
+        ["раз", "но", "цвет", "ный"], ["ис", "сле", "до", "ва", "тель"],
+        ["и", "зо", "бре", "та", "тель"], ["во", "об", "ра", "же", "ни", "е"],
+        ["про", "грам", "ми", "ро", "ва", "ни", "е"], ["бе", "зо", "пас", "ность"],
+        ["пу", "те", "шест", "ви", "е"], ["при", "клю", "че", "ни", "е"],
+        ["фо", "то", "гра", "фи", "я"], ["э", "лек", "три", "че", "ство"]
+      ]
+    });
 
     const rewards = [
       { atlas: "items1", sprite: 10, name: "Печенье", text: "Печенье уже в коллекции!" },
@@ -813,7 +979,7 @@
       { atlas: "items1", sprite: 12, name: "Тотем бессмертия", text: "Легендарный тотем твой!" }
     ];
 
-    const cards = wordParts.map((parts, index) => ({ parts, reward: rewards[index] }));
+    let cards = [];
 
     const atlasFiles = {
       items1: "assets/minecraft-prizes-atlas.png",
@@ -822,6 +988,7 @@
     };
 
     const Screen = Object.freeze({
+      LEVEL: "level",
       WORD: "word",
       CHEST: "chest",
       REWARD: "reward",
@@ -829,6 +996,8 @@
     });
 
     const syllables = document.querySelector("#syllables");
+    const levelView = document.querySelector("#levelView");
+    const levelButtons = [...document.querySelectorAll("[data-level]")];
     const wordView = document.querySelector("#wordView");
     const chestView = document.querySelector("#chestView");
     const rewardView = document.querySelector("#rewardView");
@@ -837,6 +1006,8 @@
     const readButton = document.querySelector("#readButton");
     const nextButton = document.querySelector("#nextButton");
     const restartButton = document.querySelector("#restartButton");
+    const changeLevelButton = document.querySelector("#changeLevelButton");
+    const counter = document.querySelector("#counter");
     const score = document.querySelector("#score");
     const total = document.querySelector("#total");
     const progressBar = document.querySelector("#progressBar");
@@ -844,19 +1015,37 @@
     const rewardName = document.querySelector("#rewardName");
     const rewardText = document.querySelector("#rewardText");
     const collectionShelf = document.querySelector("#collectionShelf");
+    const progressTrack = document.querySelector("#progressTrack");
     const collectionCount = document.querySelector("#collectionCount");
     const collectionList = document.querySelector("#collectionList");
     const fullCollection = document.querySelector("#fullCollection");
     const finalTitle = document.querySelector("#finalTitle");
+    const finalSummary = document.querySelector("#finalSummary");
     const announcer = document.querySelector("#announcer");
 
     let state = {
-      screen: Screen.WORD,
+      screen: Screen.LEVEL,
       currentIndex: 0,
-      collected: []
+      collected: [],
+      difficulty: null
     };
 
-    total.textContent = cards.length;
+    function shuffle(items) {
+      const result = [...items];
+
+      for (let index = result.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(Math.random() * (index + 1));
+        [result[index], result[randomIndex]] = [result[randomIndex], result[index]];
+      }
+
+      return result;
+    }
+
+    function buildCards(difficulty) {
+      const words = shuffle(wordBanks[difficulty]).slice(0, SESSION_WORD_COUNT);
+      const shuffledRewards = shuffle(rewards);
+      return words.map((parts, index) => ({ parts, reward: shuffledRewards[index] }));
+    }
 
     function spritePosition(index) {
       const column = index % 4;
@@ -883,6 +1072,7 @@
 
       syllables.replaceChildren();
       syllables.classList.toggle("is-four", parts.length === 4);
+      syllables.classList.toggle("is-long", parts.length >= 5);
 
       parts.forEach((part, index) => {
         const syllable = document.createElement("span");
@@ -953,7 +1143,11 @@
     }
 
     function render() {
-      const { screen, currentIndex, collected } = state;
+      const { screen, currentIndex, collected, difficulty } = state;
+      const choosingLevel = screen === Screen.LEVEL;
+      const cardCount = cards.length;
+
+      levelView.hidden = !choosingLevel;
       wordView.hidden = screen !== Screen.WORD;
       chestView.hidden = screen !== Screen.CHEST;
       rewardView.hidden = screen !== Screen.REWARD;
@@ -961,19 +1155,56 @@
       readButton.hidden = screen !== Screen.WORD;
       nextButton.hidden = screen !== Screen.REWARD;
       restartButton.hidden = screen !== Screen.COLLECTION;
-      collectionShelf.hidden = screen === Screen.COLLECTION;
+      counter.hidden = choosingLevel;
+      changeLevelButton.hidden = choosingLevel;
+      collectionShelf.hidden = choosingLevel || screen === Screen.COLLECTION;
+      progressTrack.hidden = choosingLevel;
 
       score.textContent = collected.length;
-      collectionCount.textContent = `${collected.length} из ${cards.length}`;
-      progressBar.style.transform = `scaleX(${collected.length / cards.length})`;
-      nextButton.textContent = currentIndex === cards.length - 1
+      total.textContent = cardCount;
+      collectionCount.textContent = `${collected.length} из ${cardCount}`;
+      progressBar.style.transform = `scaleX(${cardCount ? collected.length / cardCount : 0})`;
+      nextButton.textContent = currentIndex === cardCount - 1
         ? "Посмотреть все призы"
         : "Следующее слово";
+
+      if (difficulty) {
+        changeLevelButton.textContent = `${difficulties[difficulty].label} · сменить`;
+        finalSummary.textContent = `Ты прочитал ${cardCount} слов уровня «${difficulties[difficulty].label}» и открыл всю коллекцию`;
+      }
 
       if (screen === Screen.WORD) renderWord();
       if (screen === Screen.REWARD) renderReward();
       if (screen === Screen.COLLECTION) renderFullCollection();
-      renderCollectionShelf();
+      if (!choosingLevel) renderCollectionShelf();
+    }
+
+    function startGame(difficulty) {
+      if (!wordBanks[difficulty]) return;
+
+      cards = buildCards(difficulty);
+      state = {
+        screen: Screen.WORD,
+        currentIndex: 0,
+        collected: [],
+        difficulty
+      };
+      render();
+      announcer.textContent = `Выбран уровень ${difficulties[difficulty].label}. Началась новая игра.`;
+      readButton.focus();
+    }
+
+    function chooseAnotherLevel() {
+      cards = [];
+      state = {
+        screen: Screen.LEVEL,
+        currentIndex: 0,
+        collected: [],
+        difficulty: null
+      };
+      render();
+      announcer.textContent = "Выбери возраст для новой игры.";
+      levelButtons[0].focus();
     }
 
     function confirmRead() {
@@ -1000,7 +1231,7 @@
       if (state.currentIndex === cards.length - 1) {
         state.screen = Screen.COLLECTION;
         render();
-        announcer.textContent = "Все 30 призов собраны. Открыта полная коллекция.";
+        announcer.textContent = `Все ${cards.length} призов собраны. Открыта полная коллекция.`;
         finalTitle.focus();
         return;
       }
@@ -1012,20 +1243,17 @@
     }
 
     function restart() {
-      state = {
-        screen: Screen.WORD,
-        currentIndex: 0,
-        collected: []
-      };
-      render();
-      announcer.textContent = "Новая игра началась.";
-      readButton.focus();
+      startGame(state.difficulty);
     }
 
+    levelButtons.forEach((button) => {
+      button.addEventListener("click", () => startGame(button.dataset.level));
+    });
     readButton.addEventListener("click", confirmRead);
     chestButton.addEventListener("click", openChest);
     nextButton.addEventListener("click", advance);
     restartButton.addEventListener("click", restart);
+    changeLevelButton.addEventListener("click", chooseAnotherLevel);
 
     render();
   </script>
