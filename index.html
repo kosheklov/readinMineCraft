@@ -3,44 +3,51 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Тренажёр чтения по слогам для детей — Reading Craft Kids</title>
-  <meta name="description" content="Бесплатный тренажёр чтения для детей 4–12 лет: слова по слогам, уровни по возрасту и Minecraft-призы. Для домашних занятий с родителями.">
+  <title>Бесплатный тренажёр чтения по слогам для детей | Reading Craft Kids</title>
+  <meta name="description" content="Бесплатный онлайн-тренажёр чтения для детей 4-12 лет: слова по слогам, сложность по возрасту и игровые Minecraft-призы. Без регистрации.">
   <meta name="robots" content="index, follow, max-image-preview:large">
-  <meta name="theme-color" content="#eef5df">
+  <meta name="theme-color" content="#084dd9">
   <meta name="application-name" content="Reading Craft Kids">
   <link rel="canonical" href="https://readingcraftkids.com/">
-  <link rel="icon" href="/assets/minecraft-chest.png" type="image/png">
-  <link rel="apple-touch-icon" href="/assets/minecraft-chest.png">
+  <link rel="icon" href="/assets/reading-craft-mark.png" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/reading-craft-mark.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="alternate" hreflang="ru" href="https://readingcraftkids.com/">
   <link rel="alternate" hreflang="x-default" href="https://readingcraftkids.com/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ru_RU">
   <meta property="og:site_name" content="Reading Craft Kids">
-  <meta property="og:title" content="Тренажёр чтения по слогам для детей — Reading Craft Kids">
-  <meta property="og:description" content="Домашние занятия чтением для детей 4–12 лет: слова по слогам, уровни по возрасту и Minecraft-призы.">
+  <meta property="og:title" content="Бесплатный тренажёр чтения для детей | Reading Craft Kids">
+  <meta property="og:description" content="Бесплатно и без регистрации: чтение по слогам, сложность по возрасту и игровые Minecraft-призы для детей 4-12 лет.">
   <meta property="og:url" content="https://readingcraftkids.com/">
-  <meta property="og:image" content="https://readingcraftkids.com/assets/minecraft-characters-atlas.png">
+  <meta property="og:image" content="https://readingcraftkids.com/assets/plates/voxel-hero-scene.jpg">
+  <meta property="og:image:width" content="1536">
+  <meta property="og:image:height" content="1536">
+  <meta property="og:image:alt" content="Ребёнок читает слово по слогам и открывает сундук с наградой">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Тренажёр чтения по слогам для детей — Reading Craft Kids">
-  <meta name="twitter:description" content="Бесплатный тренажёр чтения для домашних занятий с родителями.">
-  <meta name="twitter:image" content="https://readingcraftkids.com/assets/minecraft-characters-atlas.png">
-  <link rel="preload" as="image" href="assets/minecraft-chest.png">
-  <link rel="preload" as="image" href="assets/minecraft-prizes-atlas.png">
-  <link rel="preload" as="image" href="assets/minecraft-prizes-atlas-2.png">
-  <link rel="preload" as="image" href="assets/minecraft-characters-atlas.png">
+  <meta name="twitter:title" content="Бесплатный тренажёр чтения для детей | Reading Craft Kids">
+  <meta name="twitter:description" content="Бесплатно и без регистрации: слова по слогам, три уровня сложности и игровые награды.">
+  <meta name="twitter:image" content="https://readingcraftkids.com/assets/plates/voxel-hero-scene.jpg">
+  <meta name="twitter:image:alt" content="Ребёнок читает слово по слогам и открывает сундук с наградой">
+  <link rel="preload" as="image" href="assets/plates/voxel-hero-scene.jpg" fetchpriority="high">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "EducationalApplication",
-      "name": "Читаем и собираем",
-      "alternateName": "Reading Craft Kids",
+      "name": "Reading Craft Kids",
+      "alternateName": "Читаем и собираем",
       "url": "https://readingcraftkids.com/",
-      "description": "Бесплатный тренажёр чтения русских слов по слогам для детей 4–12 лет с уровнями сложности по возрасту и игровыми наградами.",
+      "description": "Бесплатный тренажёр чтения русских слов по слогам для детей 4-12 лет с уровнями сложности по возрасту и игровыми наградами.",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Web",
       "inLanguage": "ru",
       "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB",
+        "availability": "https://schema.org/InStock"
+      },
       "educationalUse": "Тренировка чтения по слогам",
       "audience": {
         "@type": "EducationalAudience",
@@ -988,12 +995,17 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="page">
     <section class="trainer" aria-label="Тренажер чтения слов по слогам">
       <div class="top">
-        <h1 class="title">Читаем и собираем</h1>
+        <div class="brand-lockup" aria-label="Reading Craft Kids">
+          <img class="brand-mark" src="assets/reading-craft-mark.png" alt="">
+          <span class="title">Reading<br>Craft <strong>Kids</strong></span>
+          <span class="free-badge">Бесплатно</span>
+        </div>
         <div class="top-tools">
           <div class="counter" id="counter" aria-live="polite" hidden><span id="score">0</span>/<span id="total">30</span></div>
           <button class="level-change" id="changeLevelButton" type="button" hidden>Сменить возраст</button>
@@ -1004,34 +1016,37 @@
         <section class="screen level-view" id="levelView" aria-labelledby="levelTitle">
           <div class="welcome">
             <div class="welcome-copy">
-              <h2 class="welcome-title" id="levelTitle">Чтение, которое хочется продолжать</h2>
-              <p class="welcome-lead"><strong>Тренажёр для родителей и детей:</strong> ребёнок читает слово по слогам, открывает сундук и добавляет Minecraft-приз в свою коллекцию.</p>
+              <p class="welcome-lead">Тренажёр чтения для детей 4&ndash;12 лет</p>
+              <h1 class="welcome-title" id="levelTitle">Чтение,<br>которое хочется<br>продолжать</h1>
+              <div class="level-picker">
+                <h2 class="sr-only">Выберите возраст ребёнка</h2>
+                <div class="level-options" aria-label="Уровень сложности">
+                  <button class="level-option" type="button" data-level="easy" aria-pressed="true">
+                    <span class="level-age">4-5</span>
+                    <span class="level-detail">лет</span>
+                  </button>
+                  <button class="level-option" type="button" data-level="medium" aria-pressed="false">
+                    <span class="level-age">6-7</span>
+                    <span class="level-detail">лет</span>
+                  </button>
+                  <button class="level-option" type="button" data-level="hard" aria-pressed="false">
+                    <span class="level-age">8+</span>
+                    <span class="level-detail">лет</span>
+                  </button>
+                </div>
+                <button class="start-game" id="startButton" type="button" disabled>Начать занятие <span aria-hidden="true">→</span></button>
+              </div>
             </div>
             <div class="welcome-demo" aria-label="Как проходит игра">
-              <div class="demo-word" aria-hidden="true"><span>ма</span><span>ши</span><span>на</span></div>
-              <img class="welcome-chest" src="assets/minecraft-chest.png" alt="Сундук с наградой">
-              <p>Одно прочитанное слово — один новый приз</p>
+              <img class="welcome-scene" src="assets/plates/voxel-hero-scene.jpg" alt="Ребёнок открывает светящийся сундук с наградой" fetchpriority="high" decoding="async">
+              <div class="demo-word" aria-label="Слово машина по слогам"><span>ма</span><i>•</i><span>ши</span><i>•</i><span>на</span></div>
+              <p>Без регистрации · 30 слов за занятие</p>
             </div>
           </div>
-          <div class="level-picker">
-            <div class="level-heading">
-              <h3>Выберите возраст ребёнка</h3>
-              <p>На каждом занятии — новый порядок слов и призов</p>
-            </div>
-            <div class="level-options" aria-label="Уровень сложности">
-              <button class="level-option" type="button" data-level="easy">
-                <span class="level-age">4–5 лет</span>
-                <span class="level-detail">короткие слова · 2 слога</span>
-              </button>
-              <button class="level-option" type="button" data-level="medium">
-                <span class="level-age">6–7 лет</span>
-                <span class="level-detail">средние слова · 3 слога</span>
-              </button>
-              <button class="level-option" type="button" data-level="hard">
-                <span class="level-age">8+ лет</span>
-                <span class="level-detail">длинные слова · 4–7 слогов</span>
-              </button>
-            </div>
+          <div class="steps-strip" aria-label="Как устроено занятие">
+            <div class="journey-step"><strong>01</strong><span>Выберите<br>возраст</span></div>
+            <div class="journey-step"><strong>02</strong><span>Читайте<br>по слогам</span></div>
+            <div class="journey-step"><strong>03</strong><span>Получайте<br>награды</span></div>
           </div>
         </section>
 
@@ -1044,7 +1059,7 @@
           <h2 class="screen-title" id="chestTitle">Ты заработал сундук!</h2>
           <p class="screen-text">Нажми на сундук, чтобы открыть приз</p>
           <button class="chest-button" id="chestButton" type="button" aria-label="Открыть сундук с призом">
-            <img class="chest-image" src="assets/minecraft-chest.png" alt="" aria-hidden="true">
+            <img class="chest-image" src="assets/minecraft-chest.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
             <span>Открыть сундук</span>
           </button>
         </section>
@@ -1120,8 +1135,8 @@
     const SESSION_WORD_COUNT = 30;
 
     const difficulties = Object.freeze({
-      easy: { label: "4–5 лет", description: "короткие слова" },
-      medium: { label: "6–7 лет", description: "средние слова" },
+      easy: { label: "4-5 лет", description: "короткие слова" },
+      medium: { label: "6-7 лет", description: "средние слова" },
       hard: { label: "8+ лет", description: "длинные слова" }
     });
 
@@ -1207,6 +1222,7 @@
     ];
 
     let cards = [];
+    let pendingDifficulty = "easy";
 
     const atlasFiles = {
       items1: "assets/minecraft-prizes-atlas.png",
@@ -1223,8 +1239,10 @@
     });
 
     const syllables = document.querySelector("#syllables");
+    const trainer = document.querySelector(".trainer");
     const levelView = document.querySelector("#levelView");
     const levelButtons = [...document.querySelectorAll("[data-level]")];
+    const startButton = document.querySelector("#startButton");
     const wordView = document.querySelector("#wordView");
     const chestView = document.querySelector("#chestView");
     const rewardView = document.querySelector("#rewardView");
@@ -1374,6 +1392,7 @@
       const choosingLevel = screen === Screen.LEVEL;
       const cardCount = cards.length;
 
+      trainer.classList.toggle("is-playing", !choosingLevel);
       levelView.hidden = !choosingLevel;
       wordView.hidden = screen !== Screen.WORD;
       chestView.hidden = screen !== Screen.CHEST;
@@ -1386,6 +1405,7 @@
       changeLevelButton.hidden = choosingLevel;
       collectionShelf.hidden = choosingLevel || screen === Screen.COLLECTION;
       progressTrack.hidden = choosingLevel;
+      startButton.disabled = !pendingDifficulty;
 
       score.textContent = collected.length;
       total.textContent = cardCount;
@@ -1409,6 +1429,7 @@
     function startGame(difficulty) {
       if (!wordBanks[difficulty]) return;
 
+      pendingDifficulty = difficulty;
       cards = buildCards(difficulty);
       state = {
         screen: Screen.WORD,
@@ -1423,6 +1444,8 @@
 
     function chooseAnotherLevel() {
       cards = [];
+      pendingDifficulty = null;
+      levelButtons.forEach((button) => button.setAttribute("aria-pressed", "false"));
       state = {
         screen: Screen.LEVEL,
         currentIndex: 0,
@@ -1474,8 +1497,16 @@
     }
 
     levelButtons.forEach((button) => {
-      button.addEventListener("click", () => startGame(button.dataset.level));
+      button.addEventListener("click", () => {
+        pendingDifficulty = button.dataset.level;
+        levelButtons.forEach((option) => {
+          option.setAttribute("aria-pressed", String(option === button));
+        });
+        startButton.disabled = false;
+        announcer.textContent = `Выбран уровень ${difficulties[pendingDifficulty].label}. Нажми «Начать занятие».`;
+      });
     });
+    startButton.addEventListener("click", () => startGame(pendingDifficulty));
     readButton.addEventListener("click", confirmRead);
     chestButton.addEventListener("click", openChest);
     nextButton.addEventListener("click", advance);

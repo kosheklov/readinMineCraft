@@ -1,14 +1,14 @@
 {
-  "name": "Reading Craft Kids — тренажёр чтения",
+  "name": "Reading Craft Kids: бесплатный тренажёр чтения",
   "short_name": "Reading Craft",
   "lang": "ru",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#eef5df",
-  "theme_color": "#eef5df",
+  "background_color": "#100d16",
+  "theme_color": "#084dd9",
   "icons": [
     {
-      "src": "/assets/minecraft-chest.png",
+      "src": "/assets/reading-craft-mark.png",
       "sizes": "1254x1254",
       "type": "image/png",
       "purpose": "any"
