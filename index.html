@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Читаем по слогам</title>
+  <meta name="description" content="Детский тренажер чтения сложных слов по слогам с коллекцией Minecraft-наград.">
+  <link rel="preload" as="image" href="assets/minecraft-chest.png">
+  <link rel="preload" as="image" href="assets/minecraft-prizes-atlas.png">
+  <link rel="preload" as="image" href="assets/minecraft-prizes-atlas-2.png">
+  <link rel="preload" as="image" href="assets/minecraft-characters-atlas.png">
+  <style>
+    :root {
+      --bg: #eef5df;
+      --ink: #20301e;
+      --muted: #53664d;
+      --accent: #5c9544;
+      --accent-dark: #356c2c;
+      --blue: #438bb8;
+      --green: #5c9544;
+      --panel: #fffdf4;
+      --gold: #f1b83b;
+      --shadow: 0 22px 50px rgba(53, 83, 44, 0.18);
+      font-family: "Trebuchet MS", Verdana, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(241, 184, 59, 0.24), transparent 28%),
+        radial-gradient(circle at 88% 28%, rgba(67, 139, 184, 0.2), transparent 30%),
+        linear-gradient(135deg, #fbfff2 0%, var(--bg) 55%, #e6f3dc 100%);
+      color: var(--ink);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .page {
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+
+    .trainer {
+      width: min(1160px, 100%);
+      min-height: min(760px, calc(100dvh - 56px));
+      display: grid;
+      grid-template-rows: auto auto auto auto auto;
+      gap: 22px;
+      padding: clamp(22px, 3vw, 38px);
+      border: 3px solid rgba(36, 26, 18, 0.08);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 58px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .counter {
+      min-width: 88px;
+      padding: 12px 16px;
+      border: 2px solid rgba(36, 26, 18, 0.08);
+      border-radius: 12px;
+      background: #f4edcf;
+      color: var(--muted);
+      text-align: center;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .stage {
+      display: grid;
+      place-items: center;
+      min-height: 356px;
+      text-align: center;
+    }
+
+    .word-card {
+      width: 100%;
+      padding: clamp(38px, 5vw, 64px) clamp(24px, 5vw, 64px);
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: inset 0 0 0 2px rgba(36, 26, 18, 0.06);
+    }
+
+    .hint {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: clamp(19px, 2.8vw, 28px);
+      font-weight: 800;
+    }
+
+    .syllables {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(8px, 1.4vw, 16px);
+      min-height: 122px;
+      color: var(--ink);
+      font-size: clamp(54px, 6.6vw, 96px);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .syllable {
+      display: inline-grid;
+      place-items: center;
+      min-width: 1.25em;
+      padding: 0.08em 0.14em 0.13em;
+      border-radius: 14px;
+      background: #f4edcf;
+      box-shadow: inset 0 -7px 0 rgba(92, 149, 68, 0.2);
+    }
+
+    .syllables.is-four {
+      font-size: clamp(44px, 5.2vw, 74px);
+      gap: clamp(5px, 1vw, 10px);
+    }
+
+    .dash {
+      color: var(--accent);
+      transform: translateY(-0.05em);
+    }
+
+    .gift-view {
+      display: none;
+      width: 100%;
+      animation: pop 420ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .gift-view.is-visible {
+      display: block;
+    }
+
+    .gift-reveal {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.86fr) minmax(280px, 1fr);
+      align-items: center;
+      gap: clamp(24px, 4vw, 54px);
+      width: min(780px, 100%);
+      margin: 0 auto 24px;
+    }
+
+    .gift-box {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 20px 30px rgba(65, 97, 130, 0.18));
+    }
+
+    .reward-card {
+      min-height: 310px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 10px;
+      padding: 24px;
+      border: 3px solid rgba(255, 122, 61, 0.2);
+      border-radius: 16px;
+      background: #f4edcf;
+      box-shadow: 0 18px 36px rgba(53, 83, 44, 0.16);
+    }
+
+    .reward-label {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 800;
+    }
+
+    .reward-emoji {
+      display: block;
+      font-size: clamp(108px, 12vw, 160px);
+      line-height: 1;
+      filter: drop-shadow(0 12px 16px rgba(129, 83, 35, 0.16));
+      animation: reward-pop 560ms cubic-bezier(.16, 1, .3, 1) 80ms both;
+    }
+
+    .reward-name {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(28px, 4vw, 46px);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .gift-title {
+      margin: 0;
+      font-size: clamp(38px, 8vw, 76px);
+      line-height: 1;
+    }
+
+    .gift-text {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 800;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .primary,
+    .secondary {
+      min-height: 66px;
+      padding: 0 28px;
+      border: 0;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: clamp(22px, 3.2vw, 32px);
+      font-weight: 900;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 10px 0 var(--accent-dark), 0 18px 28px rgba(53, 108, 44, 0.22);
+    }
+
+    .secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 10px 0 #2d6488, 0 18px 28px rgba(45, 100, 136, 0.2);
+    }
+
+    .secondary.is-visible {
+      display: inline-block;
+    }
+
+    .primary:hover,
+    .secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .primary:active,
+    .secondary:active {
+      transform: translateY(5px);
+      box-shadow: 0 5px 0 var(--accent-dark), 0 10px 18px rgba(53, 108, 44, 0.18);
+    }
+
+    .secondary:active {
+      box-shadow: 0 5px 0 #2d6488, 0 10px 18px rgba(45, 100, 136, 0.18);
+    }
+
+    .primary:focus-visible,
+    .secondary:focus-visible {
+      outline: 5px solid rgba(241, 184, 59, 0.72);
+      outline-offset: 5px;
+    }
+
+    .progress {
+      height: 14px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(36, 26, 18, 0.08);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--green);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 340ms ease;
+    }
+
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(0.82) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes reward-pop {
+      from {
+        opacity: 0;
+        transform: translateX(-26px) scale(0.58) rotate(-8deg);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1) rotate(0);
+      }
+    }
+
+    .screen {
+      width: 100%;
+    }
+
+    .screen-title {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1.05;
+    }
+
+    .screen-text {
+      margin: 12px auto 0;
+      max-width: 42ch;
+      color: var(--muted);
+      font-size: clamp(19px, 2.4vw, 25px);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .chest-view {
+      animation: pop 300ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .chest-button {
+      display: inline-grid;
+      justify-items: center;
+      gap: 2px;
+      margin-top: 10px;
+      padding: 4px 22px 12px;
+      border: 0;
+      border-radius: 16px;
+      background: transparent;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 900;
+      transition: transform 180ms cubic-bezier(.16, 1, .3, 1), background 180ms ease;
+    }
+
+    .chest-button:hover {
+      transform: translateY(-4px) scale(1.02);
+      background: rgba(92, 149, 68, 0.08);
+    }
+
+    .chest-button:active {
+      transform: translateY(2px) scale(0.97);
+    }
+
+    .chest-button:focus-visible {
+      outline: 5px solid rgba(241, 184, 59, 0.72);
+      outline-offset: 4px;
+    }
+
+    .chest-image {
+      width: min(290px, 46vw);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 20px 24px rgba(53, 83, 44, 0.2));
+      animation: chest-arrive 380ms cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .reward-view {
+      animation: pop 300ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .reward-view .reward-card {
+      width: min(520px, 100%);
+      min-height: 318px;
+      margin: 0 auto;
+      padding: 22px 28px 26px;
+      border-color: rgba(92, 149, 68, 0.26);
+    }
+
+    .sprite {
+      display: block;
+      flex: 0 0 auto;
+      background-color: #eee8d7;
+      background-repeat: no-repeat;
+      background-size: 400% 400%;
+    }
+
+    .reward-sprite {
+      width: 210px;
+      height: 210px;
+      border-radius: 16px;
+      box-shadow: 0 14px 28px rgba(53, 83, 44, 0.16);
+      animation: reward-pop 480ms cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .reward-view .reward-name {
+      margin-top: 14px;
+      font-size: clamp(30px, 4vw, 46px);
+    }
+
+    .reward-view .gift-text {
+      max-width: 38ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .collection-shelf {
+      padding: 16px 18px;
+      border: 2px solid rgba(53, 83, 44, 0.1);
+      border-radius: 16px;
+      background: rgba(244, 237, 207, 0.58);
+    }
+
+    .collection-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .collection-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .collection-count {
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .collection-list,
+    .full-collection {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .collection-list {
+      min-height: 50px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .collection-empty {
+      color: var(--muted);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .loot-thumb {
+      width: 48px;
+      height: 48px;
+      overflow: hidden;
+      border: 2px solid rgba(53, 83, 44, 0.16);
+      border-radius: 10px;
+      background: #eee8d7;
+    }
+
+    .loot-thumb.is-new {
+      animation: loot-added 320ms cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    .loot-thumb .sprite {
+      width: 100%;
+      height: 100%;
+    }
+
+    .collection-view {
+      padding: 12px 0 4px;
+    }
+
+    .full-collection {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .collection-card {
+      min-width: 0;
+      padding: 10px 8px 12px;
+      border-radius: 14px;
+      background: #f4edcf;
+      box-shadow: inset 0 0 0 2px rgba(53, 83, 44, 0.1);
+    }
+
+    .collection-card .sprite {
+      width: min(112px, 100%);
+      aspect-ratio: 1;
+      margin: 0 auto 8px;
+      border-radius: 10px;
+    }
+
+    .collection-card-name {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @keyframes chest-arrive {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.88);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes loot-added {
+      from {
+        opacity: 0;
+        transform: translateY(-14px) scale(0.5);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gift-view,
+      .reward-emoji,
+      .chest-view,
+      .reward-view,
+      .chest-image,
+      .reward-sprite,
+      .loot-thumb.is-new {
+        animation: none;
+      }
+
+      .primary,
+      .secondary,
+      .chest-button,
+      .progress-bar {
+        transition: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .full-collection {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        padding: 14px;
+      }
+
+      .trainer {
+        min-height: calc(100dvh - 28px);
+        gap: 16px;
+        border-radius: 16px;
+      }
+
+      .top {
+        align-items: flex-start;
+      }
+
+      .counter {
+        min-width: 72px;
+        padding: 10px 12px;
+        font-size: 18px;
+      }
+
+      .word-card {
+        padding-top: 46px;
+        padding-bottom: 46px;
+      }
+
+      .syllables {
+        font-size: clamp(38px, 10.5vw, 58px);
+      }
+
+      .syllables.is-four {
+        font-size: clamp(31px, 8.6vw, 46px);
+      }
+
+      .stage {
+        min-height: 330px;
+      }
+
+      .screen-title {
+        font-size: clamp(29px, 9vw, 40px);
+      }
+
+      .chest-image {
+        width: min(230px, 68vw);
+      }
+
+      .reward-view .reward-card {
+        min-height: 284px;
+        padding: 18px;
+      }
+
+      .reward-sprite {
+        width: 165px;
+        height: 165px;
+      }
+
+      .gift-reveal {
+        grid-template-columns: minmax(110px, 0.8fr) minmax(150px, 1fr);
+        gap: 12px;
+      }
+
+      .reward-card {
+        min-height: 190px;
+        padding: 18px 12px;
+      }
+
+      .reward-emoji {
+        font-size: clamp(74px, 22vw, 116px);
+      }
+
+      .reward-name {
+        font-size: clamp(24px, 8vw, 38px);
+      }
+
+      .collection-shelf {
+        padding: 14px;
+      }
+
+      .collection-title {
+        font-size: 19px;
+      }
+
+      .collection-count {
+        font-size: 16px;
+      }
+
+      .loot-thumb {
+        width: 40px;
+        height: 40px;
+      }
+
+      .full-collection {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .primary,
+      .secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="trainer" aria-label="Тренажер чтения слов по слогам">
+      <div class="top">
+        <h1 class="title">Читаем и собираем</h1>
+        <div class="counter" aria-live="polite"><span id="score">0</span>/<span id="total">30</span></div>
+      </div>
+
+      <div class="stage">
+        <section class="screen word-card" id="wordView" aria-labelledby="wordHint">
+          <p class="hint" id="wordHint">Прочитай слово по слогам</p>
+          <div class="syllables" id="syllables" aria-live="polite"></div>
+        </section>
+
+        <section class="screen chest-view" id="chestView" aria-labelledby="chestTitle" hidden>
+          <h2 class="screen-title" id="chestTitle">Ты заработал сундук!</h2>
+          <p class="screen-text">Нажми на сундук, чтобы открыть приз</p>
+          <button class="chest-button" id="chestButton" type="button" aria-label="Открыть сундук с призом">
+            <img class="chest-image" src="assets/minecraft-chest.png" alt="" aria-hidden="true">
+            <span>Открыть сундук</span>
+          </button>
+        </section>
+
+        <section class="screen reward-view" id="rewardView" aria-labelledby="rewardName" hidden>
+          <div class="reward-card">
+            <p class="reward-label">Новая находка</p>
+            <span class="sprite reward-sprite" id="rewardSprite" aria-hidden="true"></span>
+            <h2 class="reward-name" id="rewardName"></h2>
+            <p class="gift-text" id="rewardText"></p>
+          </div>
+        </section>
+
+        <section class="screen collection-view" id="collectionView" aria-labelledby="finalTitle" hidden>
+          <h2 class="screen-title" id="finalTitle" tabindex="-1">Все призы собраны!</h2>
+          <p class="screen-text">Ты прочитал 30 сложных слов и открыл всю коллекцию</p>
+          <ul class="full-collection" id="fullCollection"></ul>
+        </section>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="readButton" type="button">Я прочитал</button>
+        <button class="secondary" id="nextButton" type="button" hidden>Следующее слово</button>
+        <button class="secondary" id="restartButton" type="button" hidden>Начать заново</button>
+      </div>
+
+      <section class="collection-shelf" id="collectionShelf" aria-labelledby="collectionTitle">
+        <div class="collection-head">
+          <h2 class="collection-title" id="collectionTitle">Мои Minecraft-призы</h2>
+          <output class="collection-count" id="collectionCount" aria-live="polite">0 из 30</output>
+        </div>
+        <ul class="collection-list" id="collectionList">
+          <li class="collection-empty">Открой первый сундук, и здесь появится приз</li>
+        </ul>
+      </section>
+
+      <div class="progress" aria-hidden="true">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <p class="sr-only" id="announcer" aria-live="polite" aria-atomic="true"></p>
+    </section>
+  </main>
+
+  <script>
+    const wordParts = [
+      ["ба", "на", "ны"],
+      ["бе", "рё", "за"],
+      ["бу", "ма", "га"],
+      ["ка", "ре", "та"],
+      ["ку", "ри", "ца"],
+      ["ло", "па", "та"],
+      ["ма", "ли", "на"],
+      ["по", "су", "да"],
+      ["пи", "ро", "ги"],
+      ["у", "лит", "ка"],
+      ["бе", "лоч", "ка"],
+      ["ба", "боч", "ка"],
+      ["ка", "пус", "та"],
+      ["те", "ле", "фон"],
+      ["че", "мо", "дан"],
+      ["са", "по", "ги"],
+      ["о", "гу", "рец"],
+      ["са", "мо", "кат"],
+      ["ма", "ка", "ро", "ны"],
+      ["че", "ре", "па", "ха"],
+      ["ба", "ле", "ри", "на"],
+      ["ве", "ло", "си", "пед"],
+      ["те", "ле", "ви", "зор"],
+      ["пи", "ра", "ми", "да"],
+      ["ку", "ку", "ру", "за"],
+      ["гу", "се", "ни", "ца"],
+      ["пу", "го", "ви", "ца"],
+      ["па", "ро", "во", "зик"],
+      ["а", "пель", "си", "ны"],
+      ["пе", "ре", "ме", "на"]
+    ];
+
+    const rewards = [
+      { atlas: "items1", sprite: 10, name: "Печенье", text: "Печенье уже в коллекции!" },
+      { atlas: "items1", sprite: 5, name: "Редстоун", text: "Ты добыл частичку энергии!" },
+      { atlas: "characters", sprite: 8, name: "Пчела", text: "Пчела прилетела в твою команду!" },
+      { atlas: "items1", sprite: 4, name: "Лазурит", text: "Синий камень уже твой!" },
+      { atlas: "items1", sprite: 14, name: "Компас", text: "Компас покажет путь к новым словам!" },
+      { atlas: "characters", sprite: 0, name: "Стив", text: "Стив присоединился к приключению!" },
+      { atlas: "items1", sprite: 2, name: "Золотой слиток", text: "Золотой слиток уже твой!" },
+      { atlas: "items1", sprite: 1, name: "Изумруд", text: "Редкий изумруд найден!" },
+      { atlas: "characters", sprite: 9, name: "Волк", text: "Верный волк теперь рядом!" },
+      { atlas: "items1", sprite: 3, name: "Осколок аметиста", text: "Аметист ярко сияет!" },
+      { atlas: "items1", sprite: 7, name: "Зачарованная книга", text: "Книга хранит новое зачарование!" },
+      { atlas: "characters", sprite: 1, name: "Алекс", text: "Алекс присоединилась к команде!" },
+      { atlas: "items1", sprite: 6, name: "Жемчуг Эндера", text: "Жемчуг Эндера найден!" },
+      { atlas: "items1", sprite: 11, name: "Бутылочка мёда", text: "Сладкий запас для путешествия!" },
+      { atlas: "characters", sprite: 4, name: "Житель", text: "Житель пришёл в твою коллекцию!" },
+      { atlas: "items1", sprite: 8, name: "Золотое яблоко", text: "Редкое золотое яблоко!" },
+      { atlas: "items1", sprite: 9, name: "Торт", text: "Торт за отличное чтение!" },
+      { atlas: "characters", sprite: 2, name: "Крипер", text: "Крипер теперь в коллекции!" },
+      { atlas: "items2", sprite: 0, name: "Железный слиток", text: "Железный слиток добыт!" },
+      { atlas: "items2", sprite: 2, name: "Алмазный шлем", text: "Алмазный шлем найден!" },
+      { atlas: "characters", sprite: 11, name: "Лиса", text: "Лиса пришла в твою команду!" },
+      { atlas: "items2", sprite: 3, name: "Алмазный нагрудник", text: "Алмазный нагрудник твой!" },
+      { atlas: "items1", sprite: 15, name: "Алмазная кирка", text: "Алмазная кирка добыта!" },
+      { atlas: "characters", sprite: 3, name: "Эндермен", text: "Эндермен появился в коллекции!" },
+      { atlas: "items2", sprite: 1, name: "Незеритовый слиток", text: "Незеритовый слиток найден!" },
+      { atlas: "items1", sprite: 0, name: "Алмаз", text: "Настоящий алмаз твой!" },
+      { atlas: "characters", sprite: 10, name: "Аксолотль", text: "Аксолотль приплыл к тебе!" },
+      { atlas: "characters", sprite: 5, name: "Железный голем", text: "Железный голем охраняет коллекцию!" },
+      { atlas: "items1", sprite: 13, name: "Элитры", text: "Элитры для большого полёта!" },
+      { atlas: "items1", sprite: 12, name: "Тотем бессмертия", text: "Легендарный тотем твой!" }
+    ];
+
+    const cards = wordParts.map((parts, index) => ({ parts, reward: rewards[index] }));
+
+    const atlasFiles = {
+      items1: "assets/minecraft-prizes-atlas.png",
+      items2: "assets/minecraft-prizes-atlas-2.png",
+      characters: "assets/minecraft-characters-atlas.png"
+    };
+
+    const Screen = Object.freeze({
+      WORD: "word",
+      CHEST: "chest",
+      REWARD: "reward",
+      COLLECTION: "collection"
+    });
+
+    const syllables = document.querySelector("#syllables");
+    const wordView = document.querySelector("#wordView");
+    const chestView = document.querySelector("#chestView");
+    const rewardView = document.querySelector("#rewardView");
+    const collectionView = document.querySelector("#collectionView");
+    const chestButton = document.querySelector("#chestButton");
+    const readButton = document.querySelector("#readButton");
+    const nextButton = document.querySelector("#nextButton");
+    const restartButton = document.querySelector("#restartButton");
+    const score = document.querySelector("#score");
+    const total = document.querySelector("#total");
+    const progressBar = document.querySelector("#progressBar");
+    const rewardSprite = document.querySelector("#rewardSprite");
+    const rewardName = document.querySelector("#rewardName");
+    const rewardText = document.querySelector("#rewardText");
+    const collectionShelf = document.querySelector("#collectionShelf");
+    const collectionCount = document.querySelector("#collectionCount");
+    const collectionList = document.querySelector("#collectionList");
+    const fullCollection = document.querySelector("#fullCollection");
+    const finalTitle = document.querySelector("#finalTitle");
+    const announcer = document.querySelector("#announcer");
+
+    let state = {
+      screen: Screen.WORD,
+      currentIndex: 0,
+      collected: []
+    };
+
+    total.textContent = cards.length;
+
+    function spritePosition(index) {
+      const column = index % 4;
+      const row = Math.floor(index / 4);
+      return `${column * 100 / 3}% ${row * 100 / 3}%`;
+    }
+
+    function applySprite(element, reward) {
+      element.style.backgroundImage = `url("${atlasFiles[reward.atlas]}")`;
+      element.style.backgroundPosition = spritePosition(reward.sprite);
+    }
+
+    function createSprite(reward) {
+      const sprite = document.createElement("span");
+      sprite.className = "sprite";
+      sprite.setAttribute("aria-hidden", "true");
+      applySprite(sprite, reward);
+      return sprite;
+    }
+
+    function renderWord() {
+      const parts = cards[state.currentIndex].parts;
+      const fragment = document.createDocumentFragment();
+
+      syllables.replaceChildren();
+      syllables.classList.toggle("is-four", parts.length === 4);
+
+      parts.forEach((part, index) => {
+        const syllable = document.createElement("span");
+        syllable.className = "syllable";
+        syllable.textContent = part;
+        fragment.append(syllable);
+
+        if (index < parts.length - 1) {
+          const dash = document.createElement("span");
+          dash.className = "dash";
+          dash.textContent = "-";
+          fragment.append(dash);
+        }
+      });
+
+      syllables.append(fragment);
+    }
+
+    function renderReward() {
+      const reward = cards[state.currentIndex].reward;
+      applySprite(rewardSprite, reward);
+      rewardName.textContent = reward.name;
+      rewardText.textContent = reward.text;
+    }
+
+    function renderCollectionShelf() {
+      collectionList.replaceChildren();
+
+      if (state.collected.length === 0) {
+        const empty = document.createElement("li");
+        empty.className = "collection-empty";
+        empty.textContent = "Открой первый сундук, и здесь появится приз";
+        collectionList.append(empty);
+        return;
+      }
+
+      state.collected.forEach((reward, index) => {
+        const item = document.createElement("li");
+        item.className = "loot-thumb";
+        item.title = `${index + 1}. ${reward.name}`;
+
+        if (state.screen === Screen.REWARD && index === state.collected.length - 1) {
+          item.classList.add("is-new");
+        }
+
+        const label = document.createElement("span");
+        label.className = "sr-only";
+        label.textContent = `${index + 1}. ${reward.name}`;
+        item.append(createSprite(reward), label);
+        collectionList.append(item);
+      });
+    }
+
+    function renderFullCollection() {
+      fullCollection.replaceChildren();
+
+      state.collected.forEach((reward, index) => {
+        const item = document.createElement("li");
+        item.className = "collection-card";
+
+        const name = document.createElement("p");
+        name.className = "collection-card-name";
+        name.textContent = `${index + 1}. ${reward.name}`;
+
+        item.append(createSprite(reward), name);
+        fullCollection.append(item);
+      });
+    }
+
+    function render() {
+      const { screen, currentIndex, collected } = state;
+      wordView.hidden = screen !== Screen.WORD;
+      chestView.hidden = screen !== Screen.CHEST;
+      rewardView.hidden = screen !== Screen.REWARD;
+      collectionView.hidden = screen !== Screen.COLLECTION;
+      readButton.hidden = screen !== Screen.WORD;
+      nextButton.hidden = screen !== Screen.REWARD;
+      restartButton.hidden = screen !== Screen.COLLECTION;
+      collectionShelf.hidden = screen === Screen.COLLECTION;
+
+      score.textContent = collected.length;
+      collectionCount.textContent = `${collected.length} из ${cards.length}`;
+      progressBar.style.transform = `scaleX(${collected.length / cards.length})`;
+      nextButton.textContent = currentIndex === cards.length - 1
+        ? "Посмотреть все призы"
+        : "Следующее слово";
+
+      if (screen === Screen.WORD) renderWord();
+      if (screen === Screen.REWARD) renderReward();
+      if (screen === Screen.COLLECTION) renderFullCollection();
+      renderCollectionShelf();
+    }
+
+    function confirmRead() {
+      if (state.screen !== Screen.WORD) return;
+      state.screen = Screen.CHEST;
+      render();
+      chestButton.focus();
+    }
+
+    function openChest() {
+      if (state.screen !== Screen.CHEST) return;
+
+      const reward = cards[state.currentIndex].reward;
+      state.screen = Screen.REWARD;
+      state.collected.push(reward);
+      render();
+      announcer.textContent = `Открыт приз: ${reward.name}. Собрано ${state.collected.length} из ${cards.length}.`;
+      nextButton.focus();
+    }
+
+    function advance() {
+      if (state.screen !== Screen.REWARD) return;
+
+      if (state.currentIndex === cards.length - 1) {
+        state.screen = Screen.COLLECTION;
+        render();
+        announcer.textContent = "Все 30 призов собраны. Открыта полная коллекция.";
+        finalTitle.focus();
+        return;
+      }
+
+      state.currentIndex += 1;
+      state.screen = Screen.WORD;
+      render();
+      readButton.focus();
+    }
+
+    function restart() {
+      state = {
+        screen: Screen.WORD,
+        currentIndex: 0,
+        collected: []
+      };
+      render();
+      announcer.textContent = "Новая игра началась.";
+      readButton.focus();
+    }
+
+    readButton.addEventListener("click", confirmRead);
+    chestButton.addEventListener("click", openChest);
+    nextButton.addEventListener("click", advance);
+    restartButton.addEventListener("click", restart);
+
+    render();
+  </script>
+</body>
+</html>
