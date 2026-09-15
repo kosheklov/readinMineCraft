@@ -3,12 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Читаем по слогам</title>
-  <meta name="description" content="Детский тренажер чтения по слогам с уровнями по возрасту и коллекцией Minecraft-наград.">
+  <title>Читаем по слогам — тренажёр чтения для детей</title>
+  <meta name="description" content="Бесплатный детский тренажёр чтения по слогам для детей от 4 лет. Три уровня сложности, случайные слова и Minecraft-призы за чтение.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#eef5df">
+  <link rel="canonical" href="https://readingcraftkids.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:site_name" content="Reading Craft Kids">
+  <meta property="og:title" content="Читаем по слогам — тренажёр чтения для детей">
+  <meta property="og:description" content="Читайте слова по слогам и собирайте Minecraft-призы. Уровни для детей 4–5, 6–7 и 8+ лет.">
+  <meta property="og:url" content="https://readingcraftkids.com/">
+  <meta property="og:image" content="https://readingcraftkids.com/assets/minecraft-characters-atlas.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Читаем по слогам — тренажёр чтения для детей">
+  <meta name="twitter:description" content="Бесплатный тренажёр чтения по слогам с Minecraft-призами.">
+  <meta name="twitter:image" content="https://readingcraftkids.com/assets/minecraft-characters-atlas.png">
   <link rel="preload" as="image" href="assets/minecraft-chest.png">
   <link rel="preload" as="image" href="assets/minecraft-prizes-atlas.png">
   <link rel="preload" as="image" href="assets/minecraft-prizes-atlas-2.png">
   <link rel="preload" as="image" href="assets/minecraft-characters-atlas.png">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalApplication",
+      "name": "Читаем и собираем",
+      "alternateName": "Reading Craft Kids",
+      "url": "https://readingcraftkids.com/",
+      "description": "Бесплатный тренажёр чтения русских слов по слогам с уровнями сложности по возрасту.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ru",
+      "isAccessibleForFree": true,
+      "educationalUse": "Тренировка чтения по слогам",
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student",
+        "suggestedMinAge": 4,
+        "suggestedMaxAge": 12
+      }
+    }
+  </script>
   <style>
     :root {
       --bg: #eef5df;
@@ -619,6 +654,62 @@
       line-height: 1.15;
     }
 
+    .analytics-consent {
+      position: fixed;
+      z-index: 20;
+      right: 18px;
+      bottom: 18px;
+      width: min(520px, calc(100% - 36px));
+      padding: 18px;
+      border: 2px solid rgba(53, 83, 44, 0.16);
+      border-radius: 16px;
+      background: rgba(255, 253, 244, 0.98);
+      box-shadow: 0 18px 46px rgba(32, 48, 30, 0.2);
+    }
+
+    .analytics-consent p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .analytics-consent strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-size: 18px;
+    }
+
+    .consent-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .consent-button {
+      min-height: 42px;
+      padding: 0 16px;
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .consent-button.is-secondary {
+      background: transparent;
+      color: var(--accent-dark);
+    }
+
+    .consent-button:focus-visible {
+      outline: 4px solid rgba(241, 184, 59, 0.72);
+      outline-offset: 3px;
+    }
+
     .sr-only {
       position: absolute;
       width: 1px;
@@ -889,7 +980,83 @@
     </section>
   </main>
 
+  <aside class="analytics-consent" id="analyticsConsent" aria-label="Настройки статистики" hidden>
+    <p>
+      <strong>Родителям: поможете улучшить тренажёр?</strong>
+      Яндекс.Метрика покажет только общую статистику использования. Запись экрана и анализ форм отключены.
+    </p>
+    <div class="consent-actions">
+      <button class="consent-button" id="allowAnalytics" type="button">Разрешить статистику</button>
+      <button class="consent-button is-secondary" id="declineAnalytics" type="button">Нет, спасибо</button>
+    </div>
+  </aside>
+
   <script>
+    const METRIKA_ID = 112668334;
+    const ANALYTICS_CONSENT_KEY = "reading-craft-analytics-consent";
+
+    function loadMetrika() {
+      if (window.ym) return;
+
+      (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments); };
+        m[i].l = 1 * new Date();
+        for (let index = 0; index < document.scripts.length; index += 1) {
+          if (document.scripts[index].src === r) return;
+        }
+        k = e.createElement(t);
+        a = e.getElementsByTagName(t)[0];
+        k.async = true;
+        k.src = r;
+        a.parentNode.insertBefore(k, a);
+      })(window, document, "script", `https://mc.yandex.ru/metrika/tag.js?id=${METRIKA_ID}`, "ym");
+
+      window.ym(METRIKA_ID, "init", {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true
+      });
+    }
+
+    const analyticsConsent = document.querySelector("#analyticsConsent");
+    const allowAnalytics = document.querySelector("#allowAnalytics");
+    const declineAnalytics = document.querySelector("#declineAnalytics");
+
+    function readAnalyticsConsent() {
+      try {
+        return localStorage.getItem(ANALYTICS_CONSENT_KEY);
+      } catch {
+        return null;
+      }
+    }
+
+    function saveAnalyticsConsent(value) {
+      try {
+        localStorage.setItem(ANALYTICS_CONSENT_KEY, value);
+      } catch {
+        // The trainer still works when browser storage is unavailable.
+      }
+    }
+
+    const storedAnalyticsConsent = readAnalyticsConsent();
+
+    if (storedAnalyticsConsent === "granted") {
+      loadMetrika();
+    } else if (storedAnalyticsConsent === null) {
+      analyticsConsent.hidden = false;
+    }
+
+    allowAnalytics.addEventListener("click", () => {
+      saveAnalyticsConsent("granted");
+      analyticsConsent.hidden = true;
+      loadMetrika();
+    });
+
+    declineAnalytics.addEventListener("click", () => {
+      saveAnalyticsConsent("declined");
+      analyticsConsent.hidden = true;
+    });
+
     const SESSION_WORD_COUNT = 30;
 
     const difficulties = Object.freeze({
