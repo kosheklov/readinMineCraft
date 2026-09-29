@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+  <script src="/locale-routing.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Бесплатный тренажёр чтения по слогам для детей | Reading Craft Kids</title>
@@ -1547,7 +1548,7 @@
         languageSelect.value = "/ru/";
         return;
       }
-      window.location.assign(target);
+      window.location.assign(window.RCKLocale?.choose(target) || target);
     });
 
     render();

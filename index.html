@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="/locale-routing.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Free reading practice for kids | Reading Craft Kids</title>
@@ -1345,7 +1346,7 @@ $('languageSelect').addEventListener('change',()=>{
   if(![Screen.LEVEL,Screen.COLLECTION].includes(state.screen) && !window.confirm('Changing language ends this practice and clears its treasures. Continue?')) {
     $('languageSelect').value='/';return;
   }
-  window.location.assign(target);
+  window.location.assign(window.RCKLocale?.choose(target) || target);
 });
 updateFocus();render();
 

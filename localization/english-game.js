@@ -171,6 +171,6 @@ $('languageSelect').addEventListener('change',()=>{
   if(![Screen.LEVEL,Screen.COLLECTION].includes(state.screen) && !window.confirm('Changing language ends this practice and clears its treasures. Continue?')) {
     $('languageSelect').value='/';return;
   }
-  window.location.assign(target);
+  window.location.assign(window.RCKLocale?.choose(target) || target);
 });
 updateFocus();render();

@@ -6,6 +6,7 @@ const base=process.env.TEST_URL||'http://127.0.0.1:8768';
   const browser=await chromium.launch();
   const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
   await context.route('**/mc.yandex.ru/**',r=>r.abort());
+  await context.route('https://api.country.is/**',r=>r.fulfill({json:{country:'US'}}));
   const page=await context.newPage();const errors=[];
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(base+'/');

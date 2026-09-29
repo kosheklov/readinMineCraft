@@ -30,6 +30,9 @@ for (const [lang, locale] of Object.entries(locales)) {
     assert(list.every(parts => parts.length && parts.every(p => /^[\p{L}]+$/u.test(p))), 'Invalid syllable');
   }
   let page = source;
+  // Install country routing and interaction guards before the trainer is usable.
+  // The country request is asynchronous; the page is never hidden or held for it.
+  page = page.replace('<head>', '<head>\n  <script src="/locale-routing.js"></script>');
   if (lang !== 'ru') {
     const column = { en: 1, es: 2, fr: 3 }[lang];
     const difficulty = Object.fromEntries(['easy','medium','hard'].map((level, i) =>
@@ -79,7 +82,7 @@ for (const [lang, locale] of Object.entries(locales)) {
         languageSelect.value = ${jsJSON(locale.path)};
         return;
       }
-      window.location.assign(target);
+      window.location.assign(window.RCKLocale?.choose(target) || target);
     });
 `;
   page = page.replace('    render();\n  </script>', `${languageScript}\n    render();\n  </script>`);

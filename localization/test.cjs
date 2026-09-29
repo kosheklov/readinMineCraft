@@ -11,6 +11,7 @@ mkdirSync(output, {recursive:true});
   for (const viewport of [{width:1440,height:900},{width:1024,height:768},{width:768,height:1024},{width:390,height:844},{width:320,height:568}]) {
     const context = await browser.newContext({viewport, reducedMotion:'reduce'});
     await context.route('**/mc.yandex.ru/**', route=>route.abort());
+    await context.route('https://api.country.is/**', route=>route.fulfill({json:{country:'US'}}));
     const page = await context.newPage();
     page.on('pageerror', e=>errors.push(e.message));
     page.on('response', r=>{if(r.url().startsWith(base) && r.status()>=400) errors.push(`${r.status()} ${r.url()}`)});

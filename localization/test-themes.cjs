@@ -11,6 +11,7 @@ mkdirSync(output,{recursive:true});
   for(const width of [390,1440,320]) {
     const context=await browser.newContext({viewport:{width,height:width===320?568:900},reducedMotion:'reduce'});
     await context.route('**/mc.yandex.ru/**',r=>r.abort());
+    await context.route('https://api.country.is/**',r=>r.fulfill({json:{country:'US'}}));
     const page=await context.newPage();
     page.on('pageerror',e=>errors.push(e.message));
     page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400) errors.push(`${r.status()} ${r.url()}`)});
@@ -64,7 +65,7 @@ mkdirSync(output,{recursive:true});
       if(language==='en'&&width!==320) await page.screenshot({path:`${output}/en-${width}-expanded.png`,fullPage:true});
       console.log(`PASS ${language} / ${width}px: six themes, 30 unique prizes each, complete sessions and persistence`);
     }
-    await page.locator('#languageSelect').selectOption('/');await page.waitForURL(base+'/');
+    await page.locator('#languageSelect').selectOption('/');await page.waitForURL(url=>url.origin===new URL(base).origin&&url.pathname==='/'&&url.searchParams.get('lang')==='en');
     assert.equal(await page.locator('[name=rewardTheme]:checked').inputValue(),'garden');
     await page.evaluate(()=>localStorage.setItem('rck.rewardTheme.v1','not-a-theme'));await page.reload();
     assert.equal(await page.locator('[name=rewardTheme]:checked').inputValue(),'minecraft');
@@ -72,6 +73,7 @@ mkdirSync(output,{recursive:true});
   }
   const context=await browser.newContext();
   await context.route('**/mc.yandex.ru/**',r=>r.abort());
+  await context.route('https://api.country.is/**',r=>r.fulfill({json:{country:'US'}}));
   await context.addInitScript(()=>{
     Storage.prototype.getItem=()=>{throw Error('Denied')};
     Storage.prototype.setItem=()=>{throw Error('Denied')};
