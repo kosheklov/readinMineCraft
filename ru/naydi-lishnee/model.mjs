@@ -1,4 +1,5 @@
 import { tasks } from "./content.mjs";
+import { themes } from "./themes.mjs";
 
 export const prizes = [
   { name: "Печенье", sprite: 10 }, { name: "Изумруд", sprite: 1 },
@@ -8,9 +9,15 @@ export const prizes = [
   { name: "Торт", sprite: 9 }, { name: "Алмаз", sprite: 0 },
 ];
 
-export function createSession(mode = "reading", repeat = false) {
+export function createSession(mode = "reading", repeat = false, themeId = "minecraft") {
   if (!["reading", "audio"].includes(mode)) throw new Error("Unknown mode");
-  return { mode, repeat, index: 0, records: tasks.map(task => ({ id: task.id, answers: [], heard: [], hint: false, revealed: false, complete: false, prizeOpened: false })) };
+  const theme = themes.find(item => item.id === themeId);
+  if (!theme) throw new Error("Unknown theme");
+  const pool = theme.items ? theme.items.map((name, i) => ({ name, frame: theme.frames[i], image: `https://readingcraftkids.com/assets/themes/${theme.id}.png` })) : [...prizes];
+  if (theme.items) {
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+  }
+  return { mode, repeat, themeId, prizes: pool.slice(0, tasks.length), index: 0, records: tasks.map(task => ({ id: task.id, answers: [], heard: [], hint: false, revealed: false, complete: false, prizeOpened: false })) };
 }
 export const currentRecord = state => state.records[state.index];
 export function answer(state, word) {
@@ -43,7 +50,7 @@ export function openPrize(state) {
   const record = currentRecord(state);
   if (!record?.complete || record.prizeOpened) return null;
   record.prizeOpened = true;
-  return prizes[state.index];
+  return state.prizes[state.index];
 }
 export function outcome(record) {
   if (!record.complete) return "Не завершено";

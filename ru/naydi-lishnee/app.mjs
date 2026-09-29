@@ -1,3 +1,4 @@
+import { themes } from "./themes.mjs";
 import { tasks } from "./content.mjs";
 import { createSession, currentRecord, answer, hint, reveal, heard, next, outcome, summary, openPrize, prizes } from "./model.mjs";
 import { createPlayer } from "./audio.mjs";
@@ -6,6 +7,22 @@ const $ = id => document.getElementById(id);
 let state;
 let hasStarted = false;
 let silent = false;
+let selectedTheme = "minecraft";
+try { const saved = localStorage.getItem("rck.rewardTheme.v1"); if (themes.some(t => t.id === saved)) selectedTheme = saved; } catch {}
+function paintTheme() { $("theme-name").textContent = themes.find(t => t.id === selectedTheme).name; }
+for (const theme of themes) {
+  const label = document.createElement("label");
+  label.className = "theme-option";
+  const input = document.createElement("input");
+  input.type = "radio"; input.name = "rewardTheme"; input.value = theme.id; input.checked = theme.id === selectedTheme;
+  const content = document.createElement("span"); content.className = "theme-option-content";
+  const preview = theme.frames ? { frame: theme.frames[0], image: `https://readingcraftkids.com/assets/themes/${theme.id}.png` } : prizes[0];
+  content.append(prizeImage(preview), document.createTextNode(theme.name));
+  label.append(input, content);
+  input.onchange = () => { selectedTheme = theme.id; paintTheme(); try { localStorage.setItem("rck.rewardTheme.v1", selectedTheme); } catch {} };
+  $("theme-options").append(label);
+}
+paintTheme();
 const player = createPlayer({
   onStatus: text => { $("audio-status").textContent = text; },
   onHeard: word => heard(state, word),
@@ -23,47 +40,44 @@ const player = createPlayer({
   },
 });
 function screen(id, focusId) {
-  for (const name of ["intro", "task", "result"]) $(name).hidden = name !== id;
+  for (const name of ["intro", "task", "chest", "reward", "result"]) $(name).hidden = name !== id;
   $(focusId).focus();
 }
 function finishTask() {
   player.stop();
-  $("audio-status").textContent = "";
-  $("continue-silent").hidden = true;
-  const task = tasks[state.index];
   const record = currentRecord(state);
-  $("feedback").textContent = `${record.revealed ? "Разберём вместе." : "Верно!"} ${task.explanation}`;
-  $("feedback").parentElement.dataset.state = record.revealed ? "explained" : "correct";
-  document.querySelectorAll(".word").forEach(button => {
-    button.disabled = true;
-    if (button.textContent === task.answer) button.classList.add("correct");
-  });
-  document.querySelectorAll(".play").forEach(button => { button.hidden = true; });
-  $("hint").hidden = $("reveal").hidden = true;
-  $("reward-title").textContent = record.revealed ? "Задание завершено!" : "Правильно!";
-  $("reward").hidden = false;
-  $("next").hidden = true;
-  $("next").textContent = state.index === tasks.length - 1 ? "Посмотреть итог" : "Дальше";
-  $("progress").value = state.index + 1;
-  $("open-prize").focus();
+  $("chest-title").textContent = record.revealed ? "Спасибо! Мы разобрали задание." : "Спасибо! Ты заработал сундук!";
+  $("chest-counter").textContent = `Задание ${state.index + 1} из ${tasks.length} завершено`;
+  $("chest-theme").textContent = `Призы: ${themes.find(t => t.id === state.themeId).name}`;
+  $("answer-explanation").textContent = tasks[state.index].explanation;
+  $("next").textContent = state.index === tasks.length - 1 ? "Посмотреть все призы" : "Следующее задание";
+  screen("chest", "chest-title");
 }
 function prizeImage(prize) {
   const image = document.createElement("span");
   image.className = "prize-sprite";
   image.setAttribute("aria-hidden", "true");
+  if (prize.frame) {
+    const [x, y, width, height, clip] = prize.frame;
+    const art = document.createElement("span"); art.className = "theme-art";
+    const longest = Math.max(width, height);
+    art.style.width = `${width / longest * 100}%`; art.style.height = `${height / longest * 100}%`;
+    art.style.backgroundImage = `url("${prize.image}")`;
+    art.style.backgroundSize = `${1374 / width * 100}% ${1145 / height * 100}%`;
+    art.style.backgroundPosition = `${x / (1374 - width) * 100}% ${y / (1145 - height) * 100}%`;
+    if (clip) art.style.clipPath = clip;
+    image.classList.add("theme-frame"); image.append(art); return image;
+  }
   image.style.backgroundPosition = `${(prize.sprite % 4) * 100 / 3}% ${Math.floor(prize.sprite / 4) * 100 / 3}%`;
   return image;
 }
 $("open-prize").onclick = () => {
   const prize = openPrize(state);
   if (!prize) return;
-  $("open-prize").hidden = true;
-  $("prize-reveal").hidden = false;
-  const name = document.createElement("p");
-  name.textContent = `${prize.name} — в твоей коллекции!`;
-  $("prize-reveal").replaceChildren(prizeImage(prize), name);
+  $("prize-reveal").replaceChildren(prizeImage(prize));
+  $("reward-title").textContent = prize.name;
   $("next").hidden = false;
-  $("next").focus();
+  screen("reward", "reward-title");
 };
 function renderTask() {
   player.stop();
@@ -81,7 +95,7 @@ function renderTask() {
   $("feedback").parentElement.dataset.state = "";
   $("hint").hidden = false;
   $("hint").disabled = false;
-  for (const id of ["reveal", "next", "continue-silent", "restart-confirm", "reward", "prize-reveal"]) $(id).hidden = true;
+  for (const id of ["reveal", "continue-silent", "restart-confirm"]) $(id).hidden = true;
   for (const word of task.words) {
     const group = document.createElement("div");
     group.className = `word-group${canHear ? " with-audio" : ""}`;
@@ -122,7 +136,7 @@ function renderTask() {
   screen("task", "question");
 }
 $("start").onclick = () => {
-  state = createSession(document.querySelector('input[name="mode"]:checked').value, hasStarted);
+  state = createSession(document.querySelector('input[name="mode"]:checked').value, hasStarted, selectedTheme);
   hasStarted = true;
   silent = false;
   renderTask();
@@ -145,8 +159,8 @@ $("next").onclick = () => {
     if (record.prizeOpened) {
       const item = document.createElement("li");
       const label = document.createElement("span");
-      label.textContent = prizes[index].name;
-      item.append(prizeImage(prizes[index]), label);
+      label.textContent = state.prizes[index].name;
+      item.append(prizeImage(state.prizes[index]), label);
       $("collection").append(item);
     }
     const row = document.createElement("li");
