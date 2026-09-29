@@ -1,8 +1,8 @@
 {
   "name": "Reading Craft Kids",
   "short_name": "Reading Craft",
-  "lang": "en",
-  "start_url": "/",
+  "lang": "ru",
+  "start_url": "/ru/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#100d16",

@@ -1,0 +1,99 @@
+/* A quiet top selector: keep the existing landing composition below it. */
+.language-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-height: 56px;
+  padding: 6px clamp(16px, 3vw, 48px);
+  background: var(--studio-ink);
+  color: var(--studio-paper);
+  font-size: 14px;
+}
+.language-bar select {
+  min-height: 44px;
+  max-width: 180px;
+  border: 1px solid var(--studio-muted);
+  border-radius: 6px;
+  padding: 8px 12px;
+  background: var(--studio-ink);
+  color: var(--studio-paper);
+  font: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+.language-bar select:focus-visible {
+  outline: 3px solid var(--studio-yellow);
+  outline-offset: 3px;
+}
+.language-bar a { color: var(--studio-paper); }
+.language-bar noscript { line-height: 2; }
+.trainer.is-playing .reward-name,
+.trainer.is-playing .collection-card-name { overflow-wrap: anywhere; }
+
+@media (min-width: 721px) {
+  html:not([lang="ru"]) .trainer:not(.is-playing) .welcome-title {
+    max-width: none;
+    margin-left: 8px;
+    font-size: clamp(38px, 4vw, 64px);
+    text-wrap: initial;
+  }
+  .start-game {
+    padding-inline: clamp(16px, 2.5vw, 36px);
+    gap: 12px;
+    font-size: clamp(18px, 2vw, 30px);
+    white-space: normal;
+    text-align: left;
+  }
+}
+
+@media (max-width: 720px) {
+  .trainer.is-playing {
+    width: calc(100% - 24px);
+    margin: 12px auto;
+    padding: 16px;
+    gap: 16px;
+    min-height: calc(100dvh - 80px);
+  }
+  .trainer.is-playing .top { flex-wrap: wrap; gap: 12px; }
+  .trainer.is-playing .brand-lockup { flex: 1; }
+  .trainer.is-playing .free-badge { display: none; }
+  .trainer.is-playing .top-tools { gap: 6px; }
+  .trainer.is-playing .counter { min-width: 52px; padding: 8px; }
+  .trainer.is-playing .level-change { min-height: 44px; }
+  .trainer.is-playing .stage { min-height: 200px; }
+  .trainer.is-playing .word-card { padding: 24px 8px; }
+  .trainer.is-playing .hint { margin-bottom: 20px; }
+  .trainer.is-playing .syllables { gap: 4px; }
+  .trainer.is-playing .syllable { padding: 8px 5px; }
+  .trainer.is-playing .actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 4;
+    background: #17131d;
+    padding: 10px 0 max(12px, env(safe-area-inset-bottom));
+  }
+  .trainer.is-playing .actions:has(button:not([hidden])) { min-height: 82px; }
+  .trainer.is-playing .actions button {
+    min-width: 0;
+    width: 100%;
+    min-height: 56px;
+    font-size: 18px;
+    padding: 14px 10px;
+  }
+  .trainer.is-playing .screen-title { font-size: 28px; }
+  .trainer.is-playing .chest-image { width: 150px; }
+  .trainer.is-playing .reward-view .reward-card { min-height: 200px; }
+  .trainer.is-playing .reward-sprite { width: 100px; height: 100px; }
+  .trainer.is-playing .reward-name { font-size: 25px; }
+}
+
+/* The longer localized free badge gets its own space on narrow tablets. */
+@media (min-width: 721px) and (max-width: 980px) {
+  .trainer:not(.is-playing) .free-badge {
+    position: absolute;
+    top: 110px;
+    left: clamp(28px, 3.2vw, 48px);
+    margin: 0;
+  }
+}
