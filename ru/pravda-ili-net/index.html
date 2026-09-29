@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../naydi-lishnee/style.css">
   <link rel="stylesheet" href="../reading-games/style.css">
 <link rel="stylesheet" href="../reading-games/theme-picker.css">
+<link rel="stylesheet" href="../reading-games/illustrations.css">
 </head>
 <body data-exercise="pravda-ili-net">
   <a class="skip" href="#main">К заданию</a>
@@ -34,8 +35,10 @@
       <div class="task-top"><p id="counter"></p><button id="restart-task" class="quiet" type="button">Начать заново</button></div>
       <progress id="progress" max="10" value="0" aria-label="Завершено заданий"></progress>
       <h1 id="question" tabindex="-1">Правда или нет?</h1>
+      <div class="task-context"><div id="task-illustration" class="task-illustration" aria-hidden="true"></div><div class="task-copy">
       <p id="category" class="reading-prompt"></p>
       <p id="statement" class="statement" hidden></p>
+      </div></div>
       <p id="instruction" class="note"></p>
       <div id="words" class="words"></div>
       <p id="audio-status" class="note" role="status"></p>

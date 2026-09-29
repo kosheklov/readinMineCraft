@@ -1,0 +1,6 @@
+.task-context { display: grid; grid-template-columns: clamp(150px,20vw,230px) minmax(0,1fr); align-items: center; gap: clamp(20px,3vw,40px); margin: 24px 0; }
+.task-illustration { width: 100%; aspect-ratio: 1; background-repeat: no-repeat; border-radius: 18px; }
+.task-copy { min-width: 0; }
+.task-copy .reading-prompt, .task-copy .lead, .task-copy .statement { margin: 0; max-width: 34ch; }
+.task-copy .statement { margin-top: 24px; }
+@media(max-width:600px) { .task-context { grid-template-columns: 1fr; gap: 12px; margin: 16px 0; } .task-illustration { width: 140px; justify-self: center; } }

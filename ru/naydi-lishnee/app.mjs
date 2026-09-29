@@ -1,3 +1,4 @@
+import { paintIllustration } from "../reading-games/illustrations.mjs";
 import { themes } from "./themes.mjs";
 import { tasks } from "./content.mjs";
 import { createSession, currentRecord, answer, hint, reveal, heard, next, outcome, summary, openPrize, prizes } from "./model.mjs";
@@ -87,6 +88,7 @@ $("open-prize").onclick = () => {
 function renderTask() {
   player.stop();
   const task = tasks[state.index];
+  paintIllustration("naydi-lishnee", state.index);
   const canHear = state.mode === "audio" && Boolean(task.audio) && !silent;
   $("counter").textContent = `Задание ${state.index + 1} из ${tasks.length}`;
   $("progress").value = state.index;

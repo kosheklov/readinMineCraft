@@ -1,3 +1,4 @@
+import { paintIllustration } from "../reading-games/illustrations.mjs";
 import { renderAnswer } from "./syllables.mjs";
 import { themes } from "../naydi-lishnee/themes.mjs";
 import { exerciseSets } from "./content.mjs";
@@ -90,6 +91,7 @@ $("open-prize").onclick = () => {
 function renderTask() {
   player.stop();
   const task = tasks[state.index];
+  paintIllustration(document.body.dataset.exercise, state.index);
   const canHear = state.mode === "audio" && Boolean(task.audio) && !silent;
   $("counter").textContent = `Задание ${state.index + 1} из ${tasks.length}`;
   $("progress").value = state.index;
