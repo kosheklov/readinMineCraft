@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#084dd9">
+  <meta name="robots" content="noindex, follow">
+  <meta name="description" content="Найди противоположное: 10 заданий с подсказками и тематическими призами для практики чтения.">
+  <title>Найди противоположное | Reading Craft Kids</title>
+  <link rel="stylesheet" href="../naydi-lishnee/style.css">
+  <link rel="stylesheet" href="../reading-games/style.css">
+<style>.reading-prompt { white-space: pre-line; } .word { font-size: clamp(24px, 2.5vw, 32px); overflow-wrap: anywhere; }</style>
+</head>
+<body data-exercise="naydi-protivopolozhnoe">
+  <a class="skip" href="#main">К заданию</a>
+  <header><a class="brand" href="/ru/">Reading Craft <span>Kids</span></a><span>Практика чтения</span></header>
+  <main id="main">
+    <section id="intro" aria-labelledby="intro-title">
+      <h1 id="intro-title" tabindex="-1">Найди противоположное</h1>
+      <p class="lead">Прочитай слово. Найди слово с противоположным значением.</p>
+      <p>10 коротких заданий · без таймера</p>
+      <input type="radio" name="mode" value="reading" checked hidden>
+      <p class="note">Читаем сами или вместе со взрослым. В этом наборе нет озвучки.</p>
+      <details class="theme-picker">
+        <summary>Призы: <strong id="theme-name">Minecraft</strong> · выбрать тему</summary>
+        <fieldset><legend>Выбери призы</legend><div id="theme-options" class="theme-options"></div></fieldset>
+        <p class="note">10 разных призов за прохождение. Те же задания, с любимой темой.</p>
+      </details>
+      <button id="start" class="primary" type="button" disabled>Готовим задание…</button>
+      <p id="load-status" class="note" role="status"></p>
+      <noscript><p>Для заданий нужен JavaScript. Включите его и обновите страницу.</p></noscript>
+    </section>
+    <section id="task" aria-labelledby="question" hidden>
+      <div class="task-top"><p id="counter"></p><button id="restart-task" class="quiet" type="button">Начать заново</button></div>
+      <progress id="progress" max="10" value="0" aria-label="Завершено заданий"></progress>
+      <h1 id="question" tabindex="-1">Найди противоположное</h1>
+      <p id="category" class="reading-prompt"></p>
+      <p id="statement" class="statement" hidden></p>
+      <p id="instruction" class="note"></p>
+      <div id="words" class="words"></div>
+      <p id="audio-status" class="note" role="status"></p>
+      <button id="continue-silent" class="quiet" type="button" hidden>Продолжить без звука</button>
+      <div class="feedback" role="status" aria-live="polite"><p id="feedback"></p></div>
+      <div class="actions">
+        <button id="hint" class="secondary" type="button">Подсказка</button>
+        <button id="reveal" class="quiet" type="button" hidden>Показать ответ</button>
+      </div>
+      <div id="restart-confirm" class="restart-confirm" hidden>
+        <p>Вернуться к началу? Ответы этого прохождения не сохранятся.</p>
+        <div class="actions"><button id="confirm-restart" class="secondary" type="button">Да, начать заново</button><button id="cancel-restart" class="quiet" type="button">Продолжить задание</button></div>
+      </div>
+    </section>
+    <section id="chest" class="chest-view" aria-labelledby="chest-title" hidden>
+      <p id="chest-counter" class="note"></p>
+      <h1 id="chest-title" tabindex="-1">Спасибо! Ты заработал сундук!</h1>
+      <p class="lead">Нажми на сундук, чтобы открыть приз</p>
+      <p id="chest-theme" class="note"></p>
+      <p id="answer-explanation" class="note"></p>
+      <button id="open-prize" class="chest-button" type="button"><img src="../naydi-lishnee/chest.png" alt="" width="290" height="290"><span>Открыть сундук</span></button>
+    </section>
+    <section id="reward" class="reward-view" aria-labelledby="reward-title" hidden>
+      <div class="reward-card">
+        <p class="lead">Новая находка</p>
+        <div id="prize-reveal" class="prize-reveal"></div>
+        <h1 id="reward-title" tabindex="-1"></h1>
+        <p>Новый приз в твою коллекцию!</p>
+      </div>
+      <div class="actions"><button id="next" class="primary" type="button">Следующее задание</button></div>
+    </section>
+    <section id="result" aria-labelledby="result-title" hidden>
+      <h1 id="result-title" tabindex="-1">Все задания пройдены!</h1>
+      <p class="lead">Ты нашёл 10 пар противоположных слов.</p>
+      <p>Вспомни один ответ и расскажи взрослому, как ты его нашёл.</p>
+      <h2>Твои призы</h2>
+      <ul id="collection" class="collection" aria-label="Собранные призы"></ul>
+      <p class="note">Призы остаются здесь до обновления страницы или нового прохождения.</p>
+      <h2>Итог для взрослого</h2>
+      <p id="summary"></p>
+      <p class="note">Это практика понимания прочитанного, а не оценка навыка. Подсказки и показ ответа отмечены отдельно.</p>
+      <details><summary>Как прошли задания</summary><ol id="records"></ol></details>
+      <p id="repeat-note" class="note"></p>
+      <div class="actions"><button id="restart" class="primary" type="button">Пройти ещё раз</button><a class="secondary link-button" href="/ru/">На главную</a></div>
+    </section>
+  </main>
+  <footer>Reading Craft Kids · Практика вместе со взрослым</footer>
+  <script type="module" src="../reading-games/app.mjs"></script>
+  <script nomodule>document.getElementById('load-status').textContent='Откройте задание в современном браузере.';</script>
+</body>
+</html>
