@@ -1019,6 +1019,36 @@
     .trainer:not(.is-playing) .welcome-copy { padding-bottom: 64px; }
     @media(max-width:1000px) { .trainer:not(.is-playing) .exercise-entries { grid-template-columns: repeat(2,minmax(0,1fr)); } }
     @media(max-width:720px) { .trainer:not(.is-playing) .exercise-entries { grid-template-columns: 1fr; padding: 24px 20px; } .trainer:not(.is-playing) .welcome-copy { padding-bottom: 30px; } .trainer:not(.is-playing) .steps-strip { height: auto; } }
+
+    @media(min-width:721px) {
+      .trainer:not(.is-playing) .welcome { min-height: calc(100dvh - 56px); }
+      .trainer:not(.is-playing) .welcome-demo { min-height: calc(100dvh - 56px); }
+      .trainer:not(.is-playing) .exercise-entries { position: absolute; z-index: 6; top: clamp(260px,36dvh,360px); right: 24px; width: calc(60% - 48px); grid-template-columns: repeat(2,minmax(0,1fr)); padding: 0; gap: 12px; background: transparent; }
+      .trainer:not(.is-playing) .exercise-entries .odd-word-entry { grid-template-columns: 60px minmax(0,1fr) 16px; min-height: 100px; gap: 10px; box-shadow: 0 6px 20px #100d1633; }
+      .trainer:not(.is-playing) .exercise-entries .entry-picture { width: 60px; height: 64px; }
+      .trainer:not(.is-playing) .exercise-entries .entry-copy strong { font-size: 16px; }
+      .trainer:not(.is-playing) .demo-word { display: none; }
+      .trainer:not(.is-playing) .welcome-demo p { bottom: 24px; }
+      .trainer:not(.is-playing) .welcome-copy { padding-top: 140px; padding-bottom: 32px; }
+      .trainer:not(.is-playing) .welcome-lead { margin-bottom: 24px; }
+      .trainer:not(.is-playing) .welcome-title { font-size: clamp(42px,4.1vw,60px); margin-bottom: 28px; }
+      .trainer:not(.is-playing) .level-picker { margin-top: 0; transform: none; }
+    }
+    @media(min-width:721px) and (max-width:980px) {
+      .trainer:not(.is-playing) .exercise-entries { right: 16px; width: calc(54% - 32px); }
+      .trainer:not(.is-playing) .exercise-entries .odd-word-entry { grid-template-columns: 40px minmax(0,1fr); padding: 9px; }
+      .trainer:not(.is-playing) .exercise-entries .entry-picture { width: 40px; height: 48px; }
+      .trainer:not(.is-playing) .exercise-entries .entry-arrow { display: none; }
+      .trainer:not(.is-playing) .exercise-entries .entry-copy strong { font-size: 14px; }
+      .trainer:not(.is-playing) .exercise-entries .entry-copy small { font-size: 11px; }
+    }
+    @media(min-width:721px) and (max-height:820px) {
+      .trainer:not(.is-playing) .welcome-copy { padding-top: 128px; }
+      .trainer:not(.is-playing) .welcome-lead { font-size: 14px; margin-bottom: 16px; }
+      .trainer:not(.is-playing) .welcome-title { font-size: 42px; margin-bottom: 20px; }
+      .trainer:not(.is-playing) .level-option { min-height: 70px; }
+      .trainer:not(.is-playing) .start-game { min-height: 62px; margin-top: 16px; }
+    }
   </style>
 </head>
 <body>
