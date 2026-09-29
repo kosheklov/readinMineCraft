@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#084dd9">
+  <meta name="robots" content="noindex, follow">
+  <meta name="description" content="Найди лишнее слово: 10 коротких заданий, 30 слов, подсказки и объяснения для совместной практики чтения.">
+  <title>Найди лишнее слово — 30 слов | Reading Craft Kids</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">К заданию</a>
+  <header><a class="brand" href="/ru/">Reading Craft <span>Kids</span></a><span>Практика чтения</span></header>
+  <main id="main">
+    <section id="intro" aria-labelledby="intro-title">
+      <h1 id="intro-title" tabindex="-1">Найди лишнее слово</h1>
+      <p class="lead">Прочитай три слова.<br>Найди то, которое отличается.</p>
+      <p>10 коротких заданий · 30 слов · без таймера</p>
+      <fieldset>
+        <legend>Как начнём?</legend>
+        <label><input type="radio" name="mode" value="reading" checked> Читаю сам</label>
+        <label><input type="radio" name="mode" value="audio"> С озвучкой первого задания</label>
+      </fieldset>
+      <p class="note">В первом задании можно послушать слова. В остальных девяти — читаем сами. Взрослый может прочитать условие.</p>
+      <button id="start" class="primary" type="button" disabled>Готовим задание…</button>
+      <p id="load-status" class="note" role="status"></p>
+      <noscript><p>Для заданий нужен JavaScript. Включите его и обновите страницу.</p></noscript>
+    </section>
+    <section id="task" aria-labelledby="question" hidden>
+      <div class="task-top"><p id="counter"></p><button id="restart-task" class="quiet" type="button">Начать заново</button></div>
+      <progress id="progress" max="10" value="0" aria-label="Завершено заданий"></progress>
+      <h1 id="question" tabindex="-1">Найди лишнее слово</h1>
+      <p id="category" class="lead"></p>
+      <p id="instruction" class="note"></p>
+      <div id="words" class="words"></div>
+      <p id="audio-status" class="note" role="status"></p>
+      <button id="continue-silent" class="quiet" type="button" hidden>Продолжить без звука</button>
+      <div class="feedback" role="status" aria-live="polite"><p id="feedback"></p></div>
+      <div class="actions">
+        <button id="hint" class="secondary" type="button">Подсказка</button>
+        <button id="reveal" class="quiet" type="button" hidden>Показать ответ</button>
+        <button id="next" class="primary" type="button" hidden>Дальше</button>
+      </div>
+      <div id="restart-confirm" class="restart-confirm" hidden>
+        <p>Вернуться к началу? Ответы этого прохождения не сохранятся.</p>
+        <div class="actions"><button id="confirm-restart" class="secondary" type="button">Да, начать заново</button><button id="cancel-restart" class="quiet" type="button">Продолжить задание</button></div>
+      </div>
+    </section>
+    <section id="result" aria-labelledby="result-title" hidden>
+      <h1 id="result-title" tabindex="-1">Все задания пройдены!</h1>
+      <p class="lead">Ты разобрался в 30 словах.</p>
+      <p>Вспомни одно лишнее слово и расскажи взрослому, почему ты его выбрал.</p>
+      <h2>Итог для взрослого</h2>
+      <p id="summary"></p>
+      <p class="note">Это практика чтения и понимания слов, а не оценка навыка. Озвучка, подсказки и показ ответа отмечены отдельно.</p>
+      <details><summary>Как прошли задания</summary><ol id="records"></ol></details>
+      <p id="repeat-note" class="note"></p>
+      <div class="actions"><button id="restart" class="primary" type="button">Пройти ещё раз</button><a class="secondary link-button" href="/ru/">На главную</a></div>
+    </section>
+  </main>
+  <footer>Reading Craft Kids · Практика вместе со взрослым</footer>
+  <script type="module" src="app.mjs"></script>
+  <script nomodule>document.getElementById('load-status').textContent='Откройте задание в современном браузере.';</script>
+</body>
+</html>
