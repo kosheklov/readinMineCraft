@@ -9,6 +9,7 @@
   <title>Правда или нет? | Reading Craft Kids</title>
   <link rel="stylesheet" href="../naydi-lishnee/style.css">
   <link rel="stylesheet" href="../reading-games/style.css">
+<link rel="stylesheet" href="../reading-games/theme-picker.css">
 </head>
 <body data-exercise="pravda-ili-net">
   <a class="skip" href="#main">К заданию</a>
@@ -20,10 +21,10 @@
       <p>10 коротких заданий · без таймера</p>
       <input type="radio" name="mode" value="reading" checked hidden>
       <p class="note">Читаем сами или вместе со взрослым. В этом наборе нет озвучки.</p>
-      <details class="theme-picker">
-        <summary>Призы: <strong id="theme-name">Minecraft</strong> · выбрать тему</summary>
-        <fieldset><legend>Выбери призы</legend><div id="theme-options" class="theme-options"></div></fieldset>
-        <p class="note">10 разных призов за прохождение. Те же задания, с любимой темой.</p>
+      <details class="reward-theme-picker">
+        <summary><span id="theme-summary" aria-hidden="true"></span><span>Тема призов: <strong id="theme-name">Minecraft</strong><small>Выбрать призы</small></span></summary>
+        <fieldset><legend>Выбрать призы</legend><p class="theme-explainer">Те же задания, но с любимыми призами.</p><div id="theme-options" class="theme-options"></div></fieldset>
+        <p class="theme-explainer">10 разных призов. Без повторов внутри занятия.</p>
       </details>
       <button id="start" class="primary" type="button" disabled>Готовим задание…</button>
       <p id="load-status" class="note" role="status"></p>

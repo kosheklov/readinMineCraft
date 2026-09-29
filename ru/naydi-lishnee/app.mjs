@@ -9,14 +9,19 @@ let hasStarted = false;
 let silent = false;
 let selectedTheme = "minecraft";
 try { const saved = localStorage.getItem("rck.rewardTheme.v1"); if (themes.some(t => t.id === saved)) selectedTheme = saved; } catch {}
-function paintTheme() { $("theme-name").textContent = themes.find(t => t.id === selectedTheme).name; }
+function paintTheme() {
+  const theme = themes.find(t => t.id === selectedTheme);
+  $("theme-name").textContent = theme.name;
+  const preview = theme.frames ? { frame: theme.frames[0], image: `https://readingcraftkids.com/assets/themes/${theme.id}.png` } : { sprite: 0 };
+  $("theme-summary").replaceChildren(prizeImage(preview));
+}
 for (const theme of themes) {
   const label = document.createElement("label");
   label.className = "theme-option";
   const input = document.createElement("input");
   input.type = "radio"; input.name = "rewardTheme"; input.value = theme.id; input.checked = theme.id === selectedTheme;
   const content = document.createElement("span"); content.className = "theme-option-content";
-  const preview = theme.frames ? { frame: theme.frames[0], image: `https://readingcraftkids.com/assets/themes/${theme.id}.png` } : prizes[0];
+  const preview = theme.frames ? { frame: theme.frames[0], image: `https://readingcraftkids.com/assets/themes/${theme.id}.png` } : { sprite: 0 };
   content.append(prizeImage(preview), document.createTextNode(theme.name));
   label.append(input, content);
   input.onchange = () => { selectedTheme = theme.id; paintTheme(); try { localStorage.setItem("rck.rewardTheme.v1", selectedTheme); } catch {} };

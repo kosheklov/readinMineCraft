@@ -8,6 +8,7 @@
   <meta name="description" content="Найди лишнее слово: 10 коротких заданий, 30 слов, подсказки и объяснения для совместной практики чтения.">
   <title>Найди лишнее слово — 30 слов | Reading Craft Kids</title>
   <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../reading-games/theme-picker.css">
 </head>
 <body>
   <a class="skip" href="#main">К заданию</a>
@@ -23,10 +24,10 @@
         <label><input type="radio" name="mode" value="audio"> С озвучкой первого задания</label>
       </fieldset>
       <p class="note">В первом задании можно послушать слова. В остальных девяти — читаем сами. Взрослый может прочитать условие.</p>
-      <details class="theme-picker">
-        <summary>Призы: <strong id="theme-name">Minecraft</strong> · выбрать тему</summary>
-        <fieldset><legend>Выбери призы</legend><div id="theme-options" class="theme-options"></div></fieldset>
-        <p class="note">10 разных призов за прохождение. Те же задания, с любимой темой.</p>
+      <details class="reward-theme-picker">
+        <summary><span id="theme-summary" aria-hidden="true"></span><span>Тема призов: <strong id="theme-name">Minecraft</strong><small>Выбрать призы</small></span></summary>
+        <fieldset><legend>Выбрать призы</legend><p class="theme-explainer">Те же задания, но с любимыми призами.</p><div id="theme-options" class="theme-options"></div></fieldset>
+        <p class="theme-explainer">10 разных призов. Без повторов внутри занятия.</p>
       </details>
       <button id="start" class="primary" type="button" disabled>Готовим задание…</button>
       <p id="load-status" class="note" role="status"></p>

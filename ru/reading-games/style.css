@@ -2,3 +2,9 @@
 .statement { max-width: 40ch; margin: 24px auto; font-size: clamp(22px, 2.5vw, 30px); line-height: 1.45; }
 body[data-exercise="pravda-ili-net"] .words { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .word.wrong:hover:enabled, .word.wrong:focus-visible { border-color: #9c251b; background: #ffe2dd; color: #751a12; }
+
+.syllable-word { display: inline-block; }
+.syllable-divider { color: #ffde72; padding: 0 .06em; }
+.word.wrong .syllable-divider { color: #751a12; }
+.word { font-size: clamp(24px, 2.4vw, 32px); }
+@media(max-width:600px) { .word { font-size: 28px; } }
