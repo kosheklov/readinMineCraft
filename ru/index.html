@@ -1000,6 +1000,7 @@
   </style>
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/localization.css">
+  <link rel="stylesheet" href="/reward-themes.css">
 </head>
 <body>
   <nav class="language-bar" aria-label="Язык">
@@ -1044,6 +1045,17 @@
                     <span class="level-detail">лет</span>
                   </button>
                 </div>
+                <details class="reward-theme-picker" id="rewardThemePicker">
+    <summary><span class="theme-summary-sprite" id="themeSummarySprite" aria-hidden="true"></span><span>Тема призов: <strong id="themeSelectedName">Minecraft</strong><small>Выбрать призы</small></span></summary>
+    <fieldset id="themeOptions" disabled><legend>Выбрать призы</legend><p class="theme-explainer">Те же задания, но с любимыми призами.</p><div class="theme-options">
+    <label class="theme-option"><input type="radio" name="rewardTheme" value="minecraft" checked><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-minecraft" aria-hidden="true"></span><span>Minecraft</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="dinosaurs"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-dinosaurs" aria-hidden="true"></span><span>Динозавры</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="space"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-space" aria-hidden="true"></span><span>Космос</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="unicorns"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-unicorns" aria-hidden="true"></span><span>Единороги</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="fairies"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-fairies" aria-hidden="true"></span><span>Феи</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="garden"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-garden" aria-hidden="true"></span><span>Цветочный сад</span></span></label>
+    </div><p id="themePrizeNote" class="theme-explainer">Все 30 прежних Minecraft-призов.</p></fieldset>
+  </details>
                 <button class="start-game" id="startButton" type="button" disabled>Начать занятие <span aria-hidden="true">→</span></button>
               </div>
             </div>
@@ -1114,6 +1126,7 @@
     </section>
   </main>
 
+  <script src="/reward-themes.js"></script>
   <script>
     const METRIKA_ID = 112668334;
 
@@ -1298,7 +1311,7 @@
 
     function buildCards(difficulty) {
       const words = shuffle(wordBanks[difficulty]).slice(0, SESSION_WORD_COUNT);
-      const shuffledRewards = shuffle(rewards);
+      const shuffledRewards = window.RCKThemes ? window.RCKThemes.rewards(rewards,words.length) : shuffle(rewards);
       return words.map((parts, index) => ({ parts, reward: shuffledRewards[index] }));
     }
 
@@ -1309,6 +1322,8 @@
     }
 
     function applySprite(element, reward) {
+      if(window.RCKThemes?.applySprite(element,reward)) return;
+      element.style.backgroundSize="400% 400%";
       element.style.backgroundImage = `url("${atlasFiles[reward.atlas]}")`;
       element.style.backgroundPosition = spritePosition(reward.sprite);
     }

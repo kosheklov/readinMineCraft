@@ -999,6 +999,7 @@
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/localization.css">
   <link rel="stylesheet" href="/phonics-en.css">
+  <link rel="stylesheet" href="/reward-themes.css">
 </head>
 <body>
   <nav class="language-bar" aria-label="Language">
@@ -1046,6 +1047,17 @@
                 <label class="phonics-focus-label" for="practiceSelect">Practice focus</label>
                 <select id="practiceSelect" aria-describedby="practiceNote"><option value="short-a">Short a · sat, map</option><option value="short-i">Short i · sit, pin</option><option value="short-o">Short o · pot, mop</option><option value="short-u">Short u · sun, mud</option><option value="short-e">Short e · pen, bed</option></select>
                 <p id="practiceNote" class="phonics-practice-note">6 words · one focus at a time</p>
+                <details class="reward-theme-picker" id="rewardThemePicker">
+    <summary><span class="theme-summary-sprite" id="themeSummarySprite" aria-hidden="true"></span><span>Prize theme: <strong id="themeSelectedName">Minecraft</strong><small>Choose prizes</small></span></summary>
+    <fieldset id="themeOptions" disabled><legend>Choose prizes</legend><p class="theme-explainer">The same reading practice, with your favourite prizes.</p><div class="theme-options">
+    <label class="theme-option"><input type="radio" name="rewardTheme" value="minecraft" checked><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-minecraft" aria-hidden="true"></span><span>Minecraft</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="dinosaurs"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-dinosaurs" aria-hidden="true"></span><span>Dinosaurs</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="space"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-space" aria-hidden="true"></span><span>Space</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="unicorns"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-unicorns" aria-hidden="true"></span><span>Unicorns</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="fairies"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-fairies" aria-hidden="true"></span><span>Fairies</span></span></label>
+<label class="theme-option"><input type="radio" name="rewardTheme" value="garden"><span class="theme-option-content"><span class="theme-preview-sprite theme-preview-garden" aria-hidden="true"></span><span>Flower garden</span></span></label>
+    </div><p id="themePrizeNote" class="theme-explainer">The original 30 Minecraft prizes.</p></fieldset>
+  </details>
                 <button class="start-game" id="startButton" type="button" disabled>Start practice <span aria-hidden="true">→</span></button>
                 <details class="phonics-parent-guide"><summary>For the adult: before you start</summary>
                   <p>This is extra practice, not a complete phonics course. First teach the sounds using your child’s school programme, then choose a matching focus here.</p>
@@ -1127,6 +1139,7 @@
     </section>
   </main>
 
+  <script src="/reward-themes.js"></script>
   <script>
     const METRIKA_ID = 112668334;
 
@@ -1176,6 +1189,8 @@ function shuffle(items) {
   return copy;
 }
 function applySprite(element,reward) {
+  if(window.RCKThemes?.applySprite(element,reward)) return;
+  element.style.backgroundSize="400% 400%";
   element.style.backgroundImage = `url("${atlasFiles[reward.atlas]}")`;
   element.style.backgroundPosition = `${(reward.sprite%4)*100/3}% ${Math.floor(reward.sprite/4)*100/3}%`;
 }
@@ -1275,7 +1290,7 @@ function render() {
   if(s!==Screen.LEVEL && s!==Screen.COLLECTION) renderCollection('collectionList',false);
 }
 function startGame() {
-  const prizes=shuffle(rewards);
+  const prizes=window.RCKThemes ? window.RCKThemes.rewards(rewards,chosenLesson.words.length) : shuffle(rewards);
   // Stay within one taught correspondence/skill, in an authored order.
   cards=chosenLesson.words.map((parts,i)=>({parts,reward:prizes[i]}));
   state={screen:Screen.WORD,currentIndex:0,collected:[],blended:false};
