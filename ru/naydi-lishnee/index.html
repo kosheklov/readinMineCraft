@@ -37,6 +37,11 @@
       <p id="audio-status" class="note" role="status"></p>
       <button id="continue-silent" class="quiet" type="button" hidden>Продолжить без звука</button>
       <div class="feedback" role="status" aria-live="polite"><p id="feedback"></p></div>
+      <div id="reward" class="reward" hidden>
+        <h2 id="reward-title">Правильно!</h2>
+        <button id="open-prize" class="chest-button" type="button"><img src="chest.png" alt="" width="80" height="80"><span>Посмотреть приз</span></button>
+        <div id="prize-reveal" class="prize-reveal" role="status" hidden></div>
+      </div>
       <div class="actions">
         <button id="hint" class="secondary" type="button">Подсказка</button>
         <button id="reveal" class="quiet" type="button" hidden>Показать ответ</button>
@@ -51,6 +56,9 @@
       <h1 id="result-title" tabindex="-1">Все задания пройдены!</h1>
       <p class="lead">Ты разобрался в 30 словах.</p>
       <p>Вспомни одно лишнее слово и расскажи взрослому, почему ты его выбрал.</p>
+      <h2>Твои призы</h2>
+      <ul id="collection" class="collection" aria-label="Собранные призы"></ul>
+      <p class="note">Призы остаются здесь до обновления страницы или нового прохождения.</p>
       <h2>Итог для взрослого</h2>
       <p id="summary"></p>
       <p class="note">Это практика чтения и понимания слов, а не оценка навыка. Озвучка, подсказки и показ ответа отмечены отдельно.</p>

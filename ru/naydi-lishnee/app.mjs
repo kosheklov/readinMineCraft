@@ -1,5 +1,5 @@
 import { tasks } from "./content.mjs";
-import { createSession, currentRecord, answer, hint, reveal, heard, next, outcome, summary } from "./model.mjs";
+import { createSession, currentRecord, answer, hint, reveal, heard, next, outcome, summary, openPrize, prizes } from "./model.mjs";
 import { createPlayer } from "./audio.mjs";
 
 const $ = id => document.getElementById(id);
@@ -33,17 +33,38 @@ function finishTask() {
   const task = tasks[state.index];
   const record = currentRecord(state);
   $("feedback").textContent = `${record.revealed ? "Разберём вместе." : "Верно!"} ${task.explanation}`;
+  $("feedback").parentElement.dataset.state = record.revealed ? "explained" : "correct";
   document.querySelectorAll(".word").forEach(button => {
     button.disabled = true;
     if (button.textContent === task.answer) button.classList.add("correct");
   });
   document.querySelectorAll(".play").forEach(button => { button.hidden = true; });
   $("hint").hidden = $("reveal").hidden = true;
-  $("next").hidden = false;
+  $("reward-title").textContent = record.revealed ? "Задание завершено!" : "Правильно!";
+  $("reward").hidden = false;
+  $("next").hidden = true;
   $("next").textContent = state.index === tasks.length - 1 ? "Посмотреть итог" : "Дальше";
   $("progress").value = state.index + 1;
-  $("next").focus();
+  $("open-prize").focus();
 }
+function prizeImage(prize) {
+  const image = document.createElement("span");
+  image.className = "prize-sprite";
+  image.setAttribute("aria-hidden", "true");
+  image.style.backgroundPosition = `${(prize.sprite % 4) * 100 / 3}% ${Math.floor(prize.sprite / 4) * 100 / 3}%`;
+  return image;
+}
+$("open-prize").onclick = () => {
+  const prize = openPrize(state);
+  if (!prize) return;
+  $("open-prize").hidden = true;
+  $("prize-reveal").hidden = false;
+  const name = document.createElement("p");
+  name.textContent = `${prize.name} — в твоей коллекции!`;
+  $("prize-reveal").replaceChildren(prizeImage(prize), name);
+  $("next").hidden = false;
+  $("next").focus();
+};
 function renderTask() {
   player.stop();
   const task = tasks[state.index];
@@ -53,10 +74,14 @@ function renderTask() {
   $("category").textContent = `Два слова называют ${task.group}. Найди другое.`;
   $("instruction").textContent = canHear ? "Нажми на слово, чтобы ответить. Кнопка рядом позволяет его послушать." : state.mode === "audio" && state.index === 1 ? "Теперь читаем слова сами. Если трудно, можно открыть подсказку." : "Прочитай слова и выбери одно. Можно воспользоваться подсказкой.";
   $("words").replaceChildren();
+  $("words").hidden = $("instruction").hidden = false;
+  $("open-prize").hidden = false;
+  $("prize-reveal").replaceChildren();
   $("feedback").textContent = $("audio-status").textContent = "";
+  $("feedback").parentElement.dataset.state = "";
   $("hint").hidden = false;
   $("hint").disabled = false;
-  for (const id of ["reveal", "next", "continue-silent", "restart-confirm"]) $(id).hidden = true;
+  for (const id of ["reveal", "next", "continue-silent", "restart-confirm", "reward", "prize-reveal"]) $(id).hidden = true;
   for (const word of task.words) {
     const group = document.createElement("div");
     group.className = `word-group${canHear ? " with-audio" : ""}`;
@@ -69,7 +94,15 @@ function renderTask() {
       $("audio-status").textContent = "";
       if (answer(state, word)) return finishTask();
       button.classList.add("wrong");
-      $("feedback").textContent = currentRecord(state).hint ? task.hint : "Посмотрим ещё раз. Какое слово не подходит к двум другим?";
+      button.setAttribute("aria-invalid", "true");
+      if (!group.querySelector(".wrong-label")) {
+        const label = document.createElement("span");
+        label.className = "wrong-label";
+        label.textContent = "Не это слово";
+        group.append(label);
+      }
+      $("feedback").parentElement.dataset.state = "wrong";
+      $("feedback").textContent = currentRecord(state).hint ? `Пока неверно. ${task.hint}` : "Пока неверно. Это слово подходит к группе. Попробуй другое.";
       if (currentRecord(state).answers.length >= 2) $("reveal").hidden = false;
     };
     group.append(button);
@@ -97,6 +130,7 @@ $("start").onclick = () => {
 $("hint").onclick = () => {
   hint(state);
   $("feedback").textContent = tasks[state.index].hint;
+  $("feedback").parentElement.dataset.state = "hint";
   $("hint").disabled = true;
 };
 $("reveal").onclick = () => { if (reveal(state)) finishTask(); };
@@ -106,7 +140,15 @@ $("next").onclick = () => {
   const result = summary(state);
   $("summary").textContent = `Завершено: ${result.completed} из ${tasks.length}. С первой попытки без подсказки и озвучки: ${result.firstTry}. Со звуковой поддержкой: ${result.audio}. С подсказкой: ${result.hints}. Разобрано с показом ответа: ${result.revealed}. Поддержка может сочетаться в одном задании.`;
   $("records").replaceChildren();
+  $("collection").replaceChildren();
   state.records.forEach((record, index) => {
+    if (record.prizeOpened) {
+      const item = document.createElement("li");
+      const label = document.createElement("span");
+      label.textContent = prizes[index].name;
+      item.append(prizeImage(prizes[index]), label);
+      $("collection").append(item);
+    }
     const row = document.createElement("li");
     row.textContent = `${tasks[index].words.join(" · ")} — ${tasks[index].answer}`;
     const detail = document.createElement("span");

@@ -1,8 +1,16 @@
 import { tasks } from "./content.mjs";
 
+export const prizes = [
+  { name: "Печенье", sprite: 10 }, { name: "Изумруд", sprite: 1 },
+  { name: "Золотой слиток", sprite: 2 }, { name: "Аметист", sprite: 3 },
+  { name: "Лазурит", sprite: 4 }, { name: "Жемчужина", sprite: 6 },
+  { name: "Волшебная книга", sprite: 7 }, { name: "Золотое яблоко", sprite: 8 },
+  { name: "Торт", sprite: 9 }, { name: "Алмаз", sprite: 0 },
+];
+
 export function createSession(mode = "reading", repeat = false) {
   if (!["reading", "audio"].includes(mode)) throw new Error("Unknown mode");
-  return { mode, repeat, index: 0, records: tasks.map(task => ({ id: task.id, answers: [], heard: [], hint: false, revealed: false, complete: false })) };
+  return { mode, repeat, index: 0, records: tasks.map(task => ({ id: task.id, answers: [], heard: [], hint: false, revealed: false, complete: false, prizeOpened: false })) };
 }
 export const currentRecord = state => state.records[state.index];
 export function answer(state, word) {
@@ -27,9 +35,15 @@ export function heard(state, word) {
   if (state.mode === "audio" && record && !record.complete && tasks[state.index].audio?.[word] && !record.heard.includes(word)) record.heard.push(word);
 }
 export function next(state) {
-  if (!currentRecord(state)?.complete) return false;
+  if (!currentRecord(state)?.complete || !currentRecord(state).prizeOpened) return false;
   state.index += 1;
   return true;
+}
+export function openPrize(state) {
+  const record = currentRecord(state);
+  if (!record?.complete || record.prizeOpened) return null;
+  record.prizeOpened = true;
+  return prizes[state.index];
 }
 export function outcome(record) {
   if (!record.complete) return "Не завершено";
