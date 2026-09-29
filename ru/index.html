@@ -1002,6 +1002,12 @@
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/localization.css">
   <link rel="stylesheet" href="/reward-themes.css">
+  <style>
+    .odd-word-entry { display: block; margin-top: 16px; padding: 10px 2px; color: var(--studio-paper, #f2ebdd); font-size: 18px; font-weight: 700; line-height: 1.4; text-decoration: underline; text-underline-offset: 4px; }
+    .odd-word-entry small { display: block; margin-top: 6px; font-size: 13px; font-weight: 500; }
+    .odd-word-entry:hover { color: #fff51f; }
+    .odd-word-entry:focus-visible { outline: 3px solid #fff51f; outline-offset: 4px; }
+  </style>
 </head>
 <body>
   <nav class="language-bar" aria-label="Язык">
@@ -1058,6 +1064,7 @@
     </div><p id="themePrizeNote" class="theme-explainer">Все 30 прежних Minecraft-призов.</p></fieldset>
   </details>
                 <button class="start-game" id="startButton" type="button" disabled>Начать занятие <span aria-hidden="true">→</span></button>
+                <a class="odd-word-entry" href="/ru/naydi-lishnee/">Найди лишнее слово <span aria-hidden="true">→</span><small>10 заданий · 30 слов · призы за задания</small></a>
               </div>
             </div>
             <div class="welcome-demo" aria-label="Как проходит игра">
