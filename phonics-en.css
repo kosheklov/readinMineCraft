@@ -1,0 +1,57 @@
+/* Scoped to the English runtime; other language routes do not load this file. */
+.phonics-choice-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+.phonics-focus-label { display: block; margin: 16px 0 6px; font-size: 14px; font-weight: 600; }
+#practiceSelect {
+  width: 100%; min-height: 48px; padding: 10px 12px;
+  border: 1px solid var(--studio-paper); border-radius: 6px;
+  background: var(--studio-paper); color: var(--studio-ink); font: inherit; font-size: 16px;
+}
+#practiceSelect:focus-visible { outline: 3px solid var(--studio-yellow); outline-offset: 3px; }
+.phonics-practice-note { margin: 8px 0 0; font-size: 14px; line-height: 1.5; }
+.phonics-parent-guide { margin-top: 16px; font-size: 14px; line-height: 1.6; font-weight: 500; }
+.phonics-parent-guide summary { min-height: 44px; padding-block: 10px; cursor: pointer; }
+.phonics-parent-guide summary:focus-visible { outline: 3px solid var(--studio-yellow); outline-offset: 3px; }
+.phonics-parent-guide p { margin: 10px 0; }
+.trainer:not(.is-playing) .level-detail { font-size: clamp(12px, 1.2vw, 17px); text-align: center; line-height: 1.2; }
+.trainer:not(.is-playing) .welcome-title { margin-bottom: 24px; }
+.trainer:not(.is-playing) .start-game { margin-top: 14px; }
+.trainer:not(.is-playing) .welcome-scene { height: 100%; min-height: 90dvh; position: absolute; inset: 0; }
+.phonics-demo span { position: relative; padding-bottom: 14px; }
+.phonics-demo span::after, .phonics-letter::after {
+  content: ''; position: absolute; width: 7px; height: 7px;
+  border-radius: 50%; bottom: 0; left: 50%; transform: translateX(-50%);
+  background: currentColor;
+}
+.phonics-demo span:first-child::after, .phonics-letter.is-digraph::after {
+  width: 70%; height: 4px; border-radius: 2px;
+}
+.trainer.is-playing .phonics-focus { color: var(--studio-muted); font-size: 14px; line-height: 1.4; margin: 0 0 20px; }
+.trainer.is-playing .phonics-prompt { color: var(--studio-muted); font-size: 16px; line-height: 1.45; margin: 20px 0 0; }
+.trainer.is-playing .phonics-sounds { flex-wrap: nowrap; gap: clamp(14px, 3vw, 30px); min-height: 100px; }
+.phonics-letter { position: relative; padding: 0 2px 16px; font-weight: 700; }
+.phonics-whole { font-weight: 700; letter-spacing: 0; }
+.trainer.is-playing .actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.trainer.is-playing .phonics-retry {
+  border: 0; background: transparent; color: var(--studio-paper); font: inherit;
+  font-size: 16px; padding: 10px 12px; min-height: 44px; text-decoration: underline; cursor: pointer;
+}
+.trainer.is-playing .hint { margin-bottom: 14px; }
+.trainer.is-playing .full-collection { grid-template-columns: repeat(3,minmax(0,1fr)); }
+@media (max-width:720px) {
+  .trainer:not(.is-playing) .welcome-demo { min-height: 58dvh; }
+  .trainer:not(.is-playing) .welcome-scene { min-height: 58dvh; }
+  .trainer.is-playing .phonics-sounds { font-size: clamp(42px,12vw,64px); gap: 14px; min-height: 80px; }
+  .trainer.is-playing .phonics-whole { font-size: clamp(42px,12vw,64px); min-height: 80px; }
+  .trainer.is-playing .word-card { padding: 16px 10px; }
+  .trainer.is-playing .hint { font-size: 19px; }
+  .trainer.is-playing .phonics-focus { margin-bottom: 14px; }
+  .trainer.is-playing .phonics-prompt { font-size: 14px; margin-top: 14px; }
+  .trainer.is-playing .actions { gap: 4px; }
+  .trainer.is-playing .actions .phonics-retry { min-height: 44px; padding: 8px; font-size: 14px; }
+  .trainer.is-playing .full-collection { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}

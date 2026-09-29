@@ -5,6 +5,8 @@ import { runInNewContext } from 'node:vm';
 import assert from 'node:assert/strict';
 import { words } from './words.mjs';
 import { messages, locales, rewardNames } from './messages.mjs';
+import { phonics } from './phonics-en.mjs';
+import { englishPage } from './english-page.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const source = readFileSync(resolve(root, 'localization/source.ru.template'), 'utf8');
@@ -19,9 +21,10 @@ const alternateLinks = Object.entries(locales).map(([lang, l]) =>
   + `\n  <link rel="alternate" hreflang="x-default" href="${origin}/">`;
 
 for (const [lang, locale] of Object.entries(locales)) {
-  const wordBank = lang === 'ru' ? originalWords : words[lang];
+  const wordBank = lang === 'ru' ? originalWords : lang === 'en'
+    ? Object.fromEntries(phonics.map(stage=>[stage.id,stage.lessons.flatMap(lesson=>lesson.words)])) : words[lang];
   for (const [level, list] of Object.entries(wordBank)) {
-    assert(list.length >= 30, `${lang}/${level} needs 30 words`);
+    assert(list.length >= (lang === 'en' ? 6 : 30), `${lang}/${level} needs enough words`);
     assert.equal(new Set(list.map(p => p.join(''))).size, list.length, `${lang}/${level}: duplicate word`);
     assert(list.every(parts => parts.length && parts.every(p => /^[\p{L}]+$/u.test(p))), 'Invalid syllable');
   }
@@ -79,6 +82,7 @@ for (const [lang, locale] of Object.entries(locales)) {
     });
 `;
   page = page.replace('    render();\n  </script>', `${languageScript}\n    render();\n  </script>`);
+  if (lang === 'en') page = englishPage(page);
   // Every foreign-language string must be translated before publishing.
   if (lang !== 'ru') assert(!/[А-Яа-яЁё]/.test(page.replaceAll('Русский','')), `Russian copy leaked into ${lang}`);
   const dir = resolve(root, locale.path.slice(1));

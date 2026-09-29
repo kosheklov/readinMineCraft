@@ -3,11 +3,6 @@
 // Age bands are inherited from the existing trainer, not validated proficiency levels.
 const bank = (words) => words.split(' ').map(word => word.split('|'));
 export const words = {
-  en: {
-    easy: bank('cat dog sun hat cup bed hen pig pen red bus fox box leg map bat bag jam net log rug lip top pot pet wet sit run hop six'),
-    medium: bank('rab|bit kit|ten pup|py bas|ket pic|nic nap|kin muf|fin sun|set ro|bot ti|ger ze|bra pa|per mu|sic tu|lip cab|in wag|on lem|on mel|on sev|en com|et plan|et mag|net hel|met vel|vet in|sect den|tist fam|ily an|i|mal ba|na|na to|ma|to'),
-    hard: bank('el|e|phant but|ter|fly la|dy|bug di|no|saur um|brel|la tel|e|phone bi|cy|cle pel|i|can oc|to|pus kan|ga|roo cat|er|pil|lar hel|i|cop|ter al|li|ga|tor av|o|ca|do mac|a|ro|ni wa|ter|mel|on cem|e|ter|y plan|e|tar|i|um li|brar|i|an mu|si|cian ad|ven|ture to|geth|er com|put|er to|mor|row af|ter|noon veg|e|ta|ble cel|e|brate dec|o|rate in|vi|ta|tion ex|plo|ra|tion')
-  },
   es: {
     easy: bank('ca|sa me|sa so|pa ma|no lu|na cu|na ga|to pa|to lo|bo fo|ca va|ca mo|no ra|na ra|ta pe|ro pe|ra pi|no pe|lo te|la ta|za bo|ta bo|ca be|so da|do de|do la|na lo|ma li|ma ma|pa pi|pa'),
     medium: bank('pe|lo|ta ma|le|ta ca|mi|no ca|mi|sa co|mi|da mo|ne|da to|ma|te pa|lo|ma ba|na|na za|pa|to a|mi|go a|be|ja o|ve|ja es|cue|la es|tre|lla tor|tu|ga ca|ba|llo ven|ta|na man|za|na cu|cha|ra te|ne|dor ca|ra|col co|ne|jo ga|lli|na ce|re|za na|ran|ja plá|ta|no pá|ja|ro mú|si|ca sá|ba|do'),

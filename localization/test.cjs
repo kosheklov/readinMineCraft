@@ -28,6 +28,7 @@ mkdirSync(output, {recursive:true});
       for (const level of ['easy','medium','hard']) {
         await page.locator(`[data-level=${level}]`).click();
         await page.locator('#startButton').click();
+        if(lang==='en') await page.locator('#blendButton').click();
         // Real pointer interactions verify the first word/chest/reward flow.
         await page.locator('#readButton').click();
         await page.locator('#chestButton').click();
@@ -44,8 +45,13 @@ mkdirSync(output, {recursive:true});
               if(/[А-Яа-яЁё]/.test(text)) failures.push(`${stateName}: Russian text`);
             }
           };
-          for(let i=1;i<30;i++) {
+          const count=lang==='en'?6:30;
+          for(let i=1;i<count;i++) {
             if(document.querySelector('#wordView').hidden) throw Error('Expected word');
+            if(lang==='en') {
+              check('sounds',document.querySelector('#blendButton'));
+              document.querySelector('#blendButton').click();
+            }
             check('word',document.querySelector('#readButton'));
             document.querySelector('#readButton').click();
             check('chest',document.querySelector('#chestButton'));
@@ -54,16 +60,17 @@ mkdirSync(output, {recursive:true});
             document.querySelector('#nextButton').click();
           }
           if(document.querySelector('#collectionView').hidden) throw Error('Expected collection');
-          if(document.querySelectorAll('#fullCollection .collection-card').length!==30) throw Error('Expected 30 rewards');
+          if(document.querySelectorAll('#fullCollection .collection-card').length!==count) throw Error('Wrong reward count');
           return [...new Set(failures)];
         },{lang,level});
         if(findings.length) errors.push(`${lang}/${level}/${viewport.width}: ${findings.join('; ')}`);
         await page.locator('#restartButton').click();
         assert(await page.locator('#wordView').isVisible());
         if(level==='hard' && viewport.width===390) await page.screenshot({path:`${output}/${lang}-390-word.png`,fullPage:true});
+        if(lang==='en') page.once('dialog',dialog=>dialog.accept());
         await page.locator('#changeLevelButton').click();
       }
-      console.log(`PASS flow: ${lang}, ${viewport.width}px, 3 × 30 rewards, restart, change age`);
+      console.log(`PASS flow: ${lang}, ${viewport.width}px, three complete sessions, restart, change focus`);
     }
     // Navigation, reload, cancellation and acceptance during a session.
     await page.goto(base+'/');

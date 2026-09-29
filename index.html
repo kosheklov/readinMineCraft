@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Free reading practice for kids | Reading Craft Kids</title>
-  <meta name="description" content="Free online reading practice for ages 4–12: words grouped into syllables, three difficulty levels and Minecraft rewards. No sign-up.">
+  <meta name="description" content="Free adult-supported phonics practice: short vowels, digraphs and adjacent consonants. Blend sounds, read words and collect rewards. No sign-up.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#084dd9">
   <meta name="application-name" content="Reading Craft Kids">
@@ -21,7 +21,7 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Reading Craft Kids">
   <meta property="og:title" content="Free reading practice for kids | Reading Craft Kids">
-  <meta property="og:description" content="Read words, open chests and collect Minecraft rewards. Free reading practice for ages 4–12, with no sign-up.">
+  <meta property="og:description" content="Practise known letter–sound correspondences, blend words and collect rewards. Free adult-supported English phonics practice.">
   <meta property="og:url" content="https://readingcraftkids.com/">
   <meta property="og:image" content="https://readingcraftkids.com/assets/plates/voxel-hero-scene.jpg">
   <meta property="og:image:width" content="1536">
@@ -29,7 +29,7 @@
   <meta property="og:image:alt" content="A child reads a word and opens a reward chest">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Free reading practice for kids | Reading Craft Kids">
-  <meta name="twitter:description" content="Free reading practice: words in syllables, three levels and rewards. No sign-up.">
+  <meta name="twitter:description" content="Short vowels, digraphs and adjacent consonants: free adult-supported phonics practice with rewards.">
   <meta name="twitter:image" content="https://readingcraftkids.com/assets/plates/voxel-hero-scene.jpg">
   <meta name="twitter:image:alt" content="A child reads a word and opens a reward chest">
   <link rel="preload" as="image" href="/assets/plates/voxel-hero-scene.jpg" fetchpriority="high">
@@ -40,7 +40,7 @@
       "name": "Reading Craft Kids",
       "alternateName": "Read and collect",
       "url": "https://readingcraftkids.com/",
-      "description": "Free English word reading practice for ages 4–12, with syllables, three difficulty levels and game rewards.",
+      "description": "Supplementary English phonics practice for sounds already taught, with adult support and game rewards. Not a reading assessment.",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Web",
       "inLanguage": "en",
@@ -51,12 +51,10 @@
         "priceCurrency": "RUB",
         "availability": "https://schema.org/InStock"
       },
-      "educationalUse": "Reading practice with syllables",
+      "educationalUse": "Practice blending sounds into words",
       "audience": {
         "@type": "EducationalAudience",
-        "educationalRole": "student",
-        "suggestedMinAge": 4,
-        "suggestedMaxAge": 12
+        "educationalRole": "student"
       }
     }
   </script>
@@ -1000,6 +998,7 @@
   </style>
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/localization.css">
+  <link rel="stylesheet" href="/phonics-en.css">
 </head>
 <body>
   <nav class="language-bar" aria-label="Language">
@@ -1016,8 +1015,8 @@
           <span class="free-badge">Free</span>
         </div>
         <div class="top-tools">
-          <div class="counter" id="counter" aria-live="polite" hidden><span id="score">0</span>/<span id="total">30</span></div>
-          <button class="level-change" id="changeLevelButton" type="button" hidden>Change age</button>
+          <div class="counter" id="counter" aria-live="polite" hidden><span id="score">0</span>/<span id="total">6</span></div>
+          <button class="level-change" id="changeLevelButton" type="button" hidden>Change focus</button>
         </div>
       </div>
 
@@ -1025,44 +1024,56 @@
         <section class="screen level-view" id="levelView" aria-labelledby="levelTitle">
           <div class="welcome">
             <div class="welcome-copy">
-              <p class="welcome-lead">Reading practice for ages 4&ndash;12</p>
-              <h1 class="welcome-title" id="levelTitle">One word.<br>One chest.<br>Keep reading.</h1>
+              <p class="welcome-lead">English phonics practice · with an adult</p>
+              <h1 class="welcome-title" id="levelTitle">Sound it out.<br>Blend it.<br>Read it.</h1>
               <div class="level-picker">
                 <noscript><p>Enable JavaScript to start a reading session.</p></noscript>
-                <h2 class="sr-only">Choose your child’s age</h2>
-                <div class="level-options" aria-label="Difficulty level">
+                <h2 class="phonics-choice-title">Choose sounds your child already knows</h2>
+                <div class="level-options" aria-label="Phonics practice stage">
                   <button class="level-option" type="button" data-level="easy" aria-pressed="true">
-                    <span class="level-age">4-5</span>
-                    <span class="level-detail">years</span>
+                    <span class="level-age">1</span>
+                    <span class="level-detail">Short vowels</span>
                   </button>
                   <button class="level-option" type="button" data-level="medium" aria-pressed="false">
-                    <span class="level-age">6-7</span>
-                    <span class="level-detail">years</span>
+                    <span class="level-age">2</span>
+                    <span class="level-detail">Two letters</span>
                   </button>
                   <button class="level-option" type="button" data-level="hard" aria-pressed="false">
-                    <span class="level-age">8+</span>
-                    <span class="level-detail">years</span>
+                    <span class="level-age">3</span>
+                    <span class="level-detail">More sounds</span>
                   </button>
                 </div>
-                <button class="start-game" id="startButton" type="button" disabled>Start reading <span aria-hidden="true">→</span></button>
+                <label class="phonics-focus-label" for="practiceSelect">Practice focus</label>
+                <select id="practiceSelect" aria-describedby="practiceNote"><option value="short-a">Short a · sat, map</option><option value="short-i">Short i · sit, pin</option><option value="short-o">Short o · pot, mop</option><option value="short-u">Short u · sun, mud</option><option value="short-e">Short e · pen, bed</option></select>
+                <p id="practiceNote" class="phonics-practice-note">6 words · one focus at a time</p>
+                <button class="start-game" id="startButton" type="button" disabled>Start practice <span aria-hidden="true">→</span></button>
+                <details class="phonics-parent-guide"><summary>For the adult: before you start</summary>
+                  <p>This is extra practice, not a complete phonics course. First teach the sounds using your child’s school programme, then choose a matching focus here.</p>
+                  <p id="practiceTip">Use the short a sound in sat. Say each sound, then blend from left to right.</p>
+                  <p>Sound spellings to know: <span id="practicePrerequisites">s · a · t · m · p · n</span>.</p>
+                  <p>Model sounds, not letter names. Avoid adding “uh” to consonants. Point to each spelling, blend, then ask your child to read the whole word.</p>
+                  <p>Stay nearby and check the reading. Buttons record practice only: there is no microphone, automatic pronunciation check or mastery score.</p>
+                </details>
               </div>
             </div>
             <div class="welcome-demo" aria-label="How the game works">
               <img class="welcome-scene" src="/assets/plates/voxel-hero-scene.jpg" alt="A child opens a glowing reward chest" fetchpriority="high" decoding="async">
-              <div class="demo-word" aria-label="Robot, split into syllables"><span>ro</span><i aria-hidden="true">•</i><span>bot</span></div>
-              <p>No sign-up · 30 words per session</p>
+              <div class="demo-word phonics-demo" aria-label="sh, i, p: three sound spellings in ship"><span>sh</span><span>i</span><span>p</span></div>
+              <p>No sign-up · 6 words per practice</p>
             </div>
           </div>
           <div class="steps-strip" aria-label="How a session works">
-            <div class="journey-step"><strong>01</strong><span>Choose<br>an age</span></div>
-            <div class="journey-step"><strong>02</strong><span>Read<br>the words</span></div>
+            <div class="journey-step"><strong>01</strong><span>Choose<br>a focus</span></div>
+            <div class="journey-step"><strong>02</strong><span>Blend sounds.<br>Read words.</span></div>
             <div class="journey-step"><strong>03</strong><span>Collect<br>rewards</span></div>
           </div>
         </section>
 
         <section class="screen word-card" id="wordView" aria-labelledby="wordHint" hidden>
           <p class="hint" id="wordHint">Read the word aloud</p>
-          <div class="syllables" id="syllables" aria-live="polite"></div>
+          <p id="phonicsFocus" class="phonics-focus"></p>
+          <div class="syllables" id="syllables"></div>
+          <p id="phonicsPrompt" class="phonics-prompt"></p>
         </section>
 
         <section class="screen chest-view" id="chestView" aria-labelledby="chestTitle" hidden>
@@ -1084,22 +1095,24 @@
         </section>
 
         <section class="screen collection-view" id="collectionView" aria-labelledby="finalTitle" hidden>
-          <h2 class="screen-title" id="finalTitle" tabindex="-1">You collected every reward!</h2>
+          <h2 class="screen-title" id="finalTitle" tabindex="-1">Your practice treasures!</h2>
           <p class="screen-text" id="finalSummary"></p>
           <ul class="full-collection" id="fullCollection"></ul>
         </section>
       </div>
 
       <div class="actions">
+        <button class="primary" id="blendButton" type="button" hidden>Blend the word</button>
         <button class="primary" id="readButton" type="button" hidden>I read it</button>
+        <button class="phonics-retry" id="soundButton" type="button" hidden>Show sound clues again</button>
         <button class="secondary" id="nextButton" type="button" hidden>Next word</button>
-        <button class="secondary" id="restartButton" type="button" hidden>Play again</button>
+        <button class="secondary" id="restartButton" type="button" hidden>Practise these words again</button>
       </div>
 
       <section class="collection-shelf" id="collectionShelf" aria-labelledby="collectionTitle" hidden>
         <div class="collection-head">
-          <h2 class="collection-title" id="collectionTitle">My Minecraft rewards</h2>
-          <output class="collection-count" id="collectionCount" aria-live="polite">0 of 30</output>
+          <h2 class="collection-title" id="collectionTitle">My practice treasures</h2>
+          <output class="collection-count" id="collectionCount" aria-live="polite">0 of 6</output>
         </div>
         <ul class="collection-list" id="collectionList">
           <li class="collection-empty">Open your first chest to start your collection</li>
@@ -1142,319 +1155,185 @@
 
     loadMetrika();
 
-    const SESSION_WORD_COUNT = 30;
-
-    const difficulties = Object.freeze({"easy":{"label":"4–5 years"},"medium":{"label":"6–7 years"},"hard":{"label":"8+ years"}});
-
-    const wordBanks = Object.freeze({"easy":[["cat"],["dog"],["sun"],["hat"],["cup"],["bed"],["hen"],["pig"],["pen"],["red"],["bus"],["fox"],["box"],["leg"],["map"],["bat"],["bag"],["jam"],["net"],["log"],["rug"],["lip"],["top"],["pot"],["pet"],["wet"],["sit"],["run"],["hop"],["six"]],"medium":[["rab","bit"],["kit","ten"],["pup","py"],["bas","ket"],["pic","nic"],["nap","kin"],["muf","fin"],["sun","set"],["ro","bot"],["ti","ger"],["ze","bra"],["pa","per"],["mu","sic"],["tu","lip"],["cab","in"],["wag","on"],["lem","on"],["mel","on"],["sev","en"],["com","et"],["plan","et"],["mag","net"],["hel","met"],["vel","vet"],["in","sect"],["den","tist"],["fam","ily"],["an","i","mal"],["ba","na","na"],["to","ma","to"]],"hard":[["el","e","phant"],["but","ter","fly"],["la","dy","bug"],["di","no","saur"],["um","brel","la"],["tel","e","phone"],["bi","cy","cle"],["pel","i","can"],["oc","to","pus"],["kan","ga","roo"],["cat","er","pil","lar"],["hel","i","cop","ter"],["al","li","ga","tor"],["av","o","ca","do"],["mac","a","ro","ni"],["wa","ter","mel","on"],["cem","e","ter","y"],["plan","e","tar","i","um"],["li","brar","i","an"],["mu","si","cian"],["ad","ven","ture"],["to","geth","er"],["com","put","er"],["to","mor","row"],["af","ter","noon"],["veg","e","ta","ble"],["cel","e","brate"],["dec","o","rate"],["in","vi","ta","tion"],["ex","plo","ra","tion"]]});
-
+    const curriculum = [{"id":"easy","label":"Short vowels","short":"Short vowels","lessons":[{"id":"short-a","label":"Short a · sat, map","focus":"Short a","tip":"Use the short a sound in sat. Say each sound, then blend from left to right.","words":[["s","a","t"],["m","a","t"],["m","a","p"],["t","a","p"],["p","a","t"],["p","a","n"]],"prerequisite":"s · a · t · m · p · n"},{"id":"short-i","label":"Short i · sit, pin","focus":"Short i","tip":"Use the short i sound in sit. Keep the vowel short as you blend.","words":[["s","i","t"],["p","i","t"],["p","i","n"],["t","i","n"],["n","i","p"],["d","i","p"]],"prerequisite":"s · i · t · p · n · d"},{"id":"short-o","label":"Short o · pot, mop","focus":"Short o","tip":"Use the short o sound in pot in your accent. These words use the same vowel pattern.","words":[["p","o","t"],["d","o","t"],["n","o","d"],["t","o","p"],["m","o","p"],["p","o","p"]],"prerequisite":"p · o · t · d · n · m"},{"id":"short-u","label":"Short u · sun, mud","focus":"Short u","tip":"Use the short u sound in sun. Say the sounds, not the letter names.","words":[["s","u","n"],["s","u","m"],["m","u","d"],["n","u","t"],["t","u","b"],["b","u","n"]],"prerequisite":"s · u · n · m · d · t · b"},{"id":"short-e","label":"Short e · pen, bed","focus":"Short e","tip":"Use the short e sound in pen. Blend all three sounds into one word.","words":[["p","e","n"],["p","e","t"],["n","e","t"],["t","e","n"],["b","e","d"],["r","e","d"]],"prerequisite":"p · e · n · t · b · d · r"}]},{"id":"medium","label":"Two letters, one sound","short":"Two letters","lessons":[{"id":"sh","label":"sh · ship, fish","focus":"sh: two letters, one sound","tip":"Keep sh together: it spells one sound. A line marks the two-letter spelling.","words":[["sh","i","p"],["sh","o","p"],["sh","u","t"],["sh","e","d"],["f","i","sh"],["d","i","sh"]],"prerequisite":"sh · i · p · o · u · t · e · d · f"},{"id":"ch","label":"ch · chip, much","focus":"ch: two letters, one sound","tip":"Keep ch together, as in chip. Do not say separate c and h sounds.","words":[["ch","i","p"],["ch","o","p"],["ch","i","n"],["ch","a","t"],["m","u","ch"],["r","i","ch"]],"prerequisite":"ch · i · p · o · n · a · t · m · u · r"},{"id":"ck","label":"ck · pack, duck","focus":"ck: two letters, one sound","tip":"At the end of these words, ck spells one k sound. Say it only once.","words":[["p","a","ck"],["s","a","ck"],["b","a","ck"],["n","e","ck"],["p","e","ck"],["d","u","ck"]],"prerequisite":"p · a · ck · s · b · n · e · d · u"},{"id":"ng","label":"ng · sing, hung","focus":"ng: two letters, one sound","tip":"Keep ng together, as at the end of sing. Do not add a separate g sound.","words":[["s","i","ng"],["r","i","ng"],["k","i","ng"],["w","i","ng"],["s","a","ng"],["h","u","ng"]],"prerequisite":"s · i · ng · r · k · w · a · h · u"}]},{"id":"hard","label":"Adjacent consonants","short":"More sounds","lessons":[{"id":"final-n","label":"Final consonants · tent, hand","focus":"Hear every final sound","tip":"Keep the final consonants separate: in tent, n and t each spell a sound.","words":[["t","e","n","t"],["b","e","n","t"],["s","e","n","t"],["d","e","n","t"],["m","e","n","d"],["h","a","n","d"]],"prerequisite":"t · e · n · b · s · d · m · h · a"},{"id":"initial-s","label":"Starting with s · stop, spin","focus":"Hear every starting sound","tip":"In stop, s and t are two sounds, not one. Blend all four sounds.","words":[["s","t","o","p"],["s","t","e","p"],["s","t","e","m"],["s","p","i","n"],["s","p","o","t"],["s","p","i","t"]],"prerequisite":"s · t · o · p · e · m · i · n"},{"id":"initial-l","label":"Starting with l blends · plan, slip","focus":"Keep both starting sounds","tip":"In plan, p and l each spell a sound. Say each one before blending the word.","words":[["p","l","a","n"],["c","l","a","p"],["f","l","a","t"],["s","l","i","p"],["s","l","a","m"],["p","l","u","m"]],"prerequisite":"p · l · a · n · c · f · t · s · i · m · u"},{"id":"initial-r","label":"Starting with r blends · crab, drum","focus":"Keep both starting sounds","tip":"In crab, c and r each spell a sound. Keep both as you blend the word.","words":[["c","r","a","b"],["d","r","u","m"],["t","r","i","p"],["g","r","i","n"],["g","r","a","b"],["f","r","o","g"]],"prerequisite":"c · r · a · b · d · u · m · t · i · p · g · n · f · o"},{"id":"final-st","label":"Ending in st · nest, list","focus":"Keep both ending sounds","tip":"At the end of nest, s and t each spell a sound. Do not miss the last sound.","words":[["b","e","s","t"],["n","e","s","t"],["r","e","s","t"],["t","e","s","t"],["l","i","s","t"],["m","i","s","t"]],"prerequisite":"b · e · s · t · n · r · l · i · m"}]}];
     const rewards = [{"atlas":"items1","sprite":10,"name":"Cookie","text":"Added to your collection!"},{"atlas":"items1","sprite":5,"name":"Redstone","text":"Added to your collection!"},{"atlas":"characters","sprite":8,"name":"Bee","text":"Added to your collection!"},{"atlas":"items1","sprite":4,"name":"Lapis lazuli","text":"Added to your collection!"},{"atlas":"items1","sprite":14,"name":"Compass","text":"Added to your collection!"},{"atlas":"characters","sprite":0,"name":"Steve","text":"Added to your collection!"},{"atlas":"items1","sprite":2,"name":"Gold ingot","text":"Added to your collection!"},{"atlas":"items1","sprite":1,"name":"Emerald","text":"Added to your collection!"},{"atlas":"characters","sprite":9,"name":"Wolf","text":"Added to your collection!"},{"atlas":"items1","sprite":3,"name":"Amethyst shard","text":"Added to your collection!"},{"atlas":"items1","sprite":7,"name":"Enchanted book","text":"Added to your collection!"},{"atlas":"characters","sprite":1,"name":"Alex","text":"Added to your collection!"},{"atlas":"items1","sprite":6,"name":"Ender pearl","text":"Added to your collection!"},{"atlas":"items1","sprite":11,"name":"Honey bottle","text":"Added to your collection!"},{"atlas":"characters","sprite":4,"name":"Villager","text":"Added to your collection!"},{"atlas":"items1","sprite":8,"name":"Golden apple","text":"Added to your collection!"},{"atlas":"items1","sprite":9,"name":"Cake","text":"Added to your collection!"},{"atlas":"characters","sprite":2,"name":"Creeper","text":"Added to your collection!"},{"atlas":"items2","sprite":0,"name":"Iron ingot","text":"Added to your collection!"},{"atlas":"items2","sprite":2,"name":"Diamond helmet","text":"Added to your collection!"},{"atlas":"characters","sprite":11,"name":"Fox","text":"Added to your collection!"},{"atlas":"items2","sprite":3,"name":"Diamond chestplate","text":"Added to your collection!"},{"atlas":"items1","sprite":15,"name":"Diamond pickaxe","text":"Added to your collection!"},{"atlas":"characters","sprite":3,"name":"Enderman","text":"Added to your collection!"},{"atlas":"items2","sprite":1,"name":"Netherite ingot","text":"Added to your collection!"},{"atlas":"items1","sprite":0,"name":"Diamond","text":"Added to your collection!"},{"atlas":"characters","sprite":10,"name":"Axolotl","text":"Added to your collection!"},{"atlas":"characters","sprite":5,"name":"Iron golem","text":"Added to your collection!"},{"atlas":"items1","sprite":13,"name":"Elytra","text":"Added to your collection!"},{"atlas":"items1","sprite":12,"name":"Totem of undying","text":"Added to your collection!"}];
+// Adult-supported English blending practice. No speech scoring or age grading.
+const Screen = Object.freeze({LEVEL:'level', WORD:'word', CHEST:'chest', REWARD:'reward', COLLECTION:'collection'});
+const $ = id => document.getElementById(id);
+const trainer = document.querySelector('.trainer');
+const levelButtons = [...document.querySelectorAll('[data-level]')];
+const practiceSelect = $('practiceSelect');
+const atlasFiles = {items1:'/assets/minecraft-prizes-atlas.png',items2:'/assets/minecraft-prizes-atlas-2.png',characters:'/assets/minecraft-characters-atlas.png'};
+let chosenStage = curriculum[0];
+let chosenLesson = chosenStage.lessons[0];
+let state = {screen:Screen.LEVEL, currentIndex:0, collected:[], blended:false};
+let cards = [];
 
-    let cards = [];
-    let pendingDifficulty = "easy";
-
-    const atlasFiles = {
-      items1: "/assets/minecraft-prizes-atlas.png",
-      items2: "/assets/minecraft-prizes-atlas-2.png",
-      characters: "/assets/minecraft-characters-atlas.png"
-    };
-
-    const Screen = Object.freeze({
-      LEVEL: "level",
-      WORD: "word",
-      CHEST: "chest",
-      REWARD: "reward",
-      COLLECTION: "collection"
-    });
-
-    const syllables = document.querySelector("#syllables");
-    const trainer = document.querySelector(".trainer");
-    const levelView = document.querySelector("#levelView");
-    const levelButtons = [...document.querySelectorAll("[data-level]")];
-    const startButton = document.querySelector("#startButton");
-    const wordView = document.querySelector("#wordView");
-    const chestView = document.querySelector("#chestView");
-    const rewardView = document.querySelector("#rewardView");
-    const collectionView = document.querySelector("#collectionView");
-    const chestButton = document.querySelector("#chestButton");
-    const readButton = document.querySelector("#readButton");
-    const nextButton = document.querySelector("#nextButton");
-    const restartButton = document.querySelector("#restartButton");
-    const changeLevelButton = document.querySelector("#changeLevelButton");
-    const counter = document.querySelector("#counter");
-    const score = document.querySelector("#score");
-    const total = document.querySelector("#total");
-    const progressBar = document.querySelector("#progressBar");
-    const rewardSprite = document.querySelector("#rewardSprite");
-    const rewardName = document.querySelector("#rewardName");
-    const rewardText = document.querySelector("#rewardText");
-    const collectionShelf = document.querySelector("#collectionShelf");
-    const progressTrack = document.querySelector("#progressTrack");
-    const collectionCount = document.querySelector("#collectionCount");
-    const collectionList = document.querySelector("#collectionList");
-    const fullCollection = document.querySelector("#fullCollection");
-    const finalTitle = document.querySelector("#finalTitle");
-    const finalSummary = document.querySelector("#finalSummary");
-    const announcer = document.querySelector("#announcer");
-
-    let state = {
-      screen: Screen.LEVEL,
-      currentIndex: 0,
-      collected: [],
-      difficulty: null
-    };
-
-    function shuffle(items) {
-      const result = [...items];
-
-      for (let index = result.length - 1; index > 0; index -= 1) {
-        const randomIndex = Math.floor(Math.random() * (index + 1));
-        [result[index], result[randomIndex]] = [result[randomIndex], result[index]];
-      }
-
-      return result;
+function announce(text) { $('announcer').textContent = text; }
+function shuffle(items) {
+  const copy = [...items];
+  for(let i=copy.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [copy[i],copy[j]]=[copy[j],copy[i]]; }
+  return copy;
+}
+function applySprite(element,reward) {
+  element.style.backgroundImage = `url("${atlasFiles[reward.atlas]}")`;
+  element.style.backgroundPosition = `${(reward.sprite%4)*100/3}% ${Math.floor(reward.sprite/4)*100/3}%`;
+}
+function createSprite(reward) {
+  const el=document.createElement('span'); el.className='sprite'; el.setAttribute('aria-hidden','true'); applySprite(el,reward); return el;
+}
+function updateFocus() {
+  $('practiceTip').textContent = chosenLesson.tip;
+  $('practicePrerequisites').textContent = chosenLesson.prerequisite;
+  $('practiceNote').textContent = `${chosenLesson.words.length} words · ${chosenLesson.focus}`;
+}
+function selectStage(id) {
+  const stage=curriculum.find(stage=>stage.id===id);
+  if(!stage) return;
+  chosenStage=stage;
+  chosenLesson=stage.lessons[0];
+  levelButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.level===id)));
+  practiceSelect.replaceChildren(...stage.lessons.map(lesson=>{
+    const option=document.createElement('option'); option.value=lesson.id; option.textContent=lesson.label; return option;
+  }));
+  updateFocus();
+  announce(`${stage.label}. Choose a focus with sounds your child already knows.`);
+}
+function renderWord() {
+  const card=cards[state.currentIndex];
+  const word=card.parts.join('');
+  const container=$('syllables');
+  container.replaceChildren();
+  container.className = state.blended ? 'syllables phonics-whole' : 'syllables phonics-sounds';
+  container.setAttribute('role','group');
+  container.setAttribute('aria-label',state.blended ? word : `Sound spellings: ${card.parts.join(', ')}.`);
+  if(state.blended) {
+    container.textContent=word;
+  } else {
+    for(const part of card.parts) {
+      const span=document.createElement('span');
+      span.className='phonics-letter'+(part.length>1?' is-digraph':'');
+      span.textContent=part;
+      span.setAttribute('aria-hidden','true');
+      container.append(span);
     }
+  }
+  $('wordHint').textContent=state.blended?'Read the whole word aloud.':'Say each sound. Then blend.';
+  $('phonicsFocus').textContent=`${chosenLesson.focus} · ${state.currentIndex+1} / ${cards.length}`;
+  $('phonicsPrompt').textContent=state.blended
+    ? 'Need help? Show the sound clues again.'
+    : (card.parts.some(part=>part.length>1)
+      ? 'A line joins two letters that spell one sound.'
+      : 'One dot for each sound. Use sounds, not letter names.');
+}
+function renderCollection(listId, full) {
+  const list=$(listId); list.replaceChildren();
+  if(!state.collected.length) {
+    const empty=document.createElement('li');empty.className='collection-empty';
+    empty.textContent='Read a word, then open your first chest.';list.append(empty);return;
+  }
+  state.collected.forEach((reward,i)=>{
+    const item=document.createElement('li');item.className=full?'collection-card':'loot-thumb';
+    item.title=reward.name;
+    const label=document.createElement(full?'p':'span');
+    label.className=full?'collection-card-name':'sr-only';label.textContent=reward.name;
+    if(!full && state.screen===Screen.REWARD && i===state.collected.length-1) item.classList.add('is-new');
+    item.append(createSprite(reward),label);list.append(item);
+  });
+}
+function render() {
+  const s=state.screen;
+  trainer.classList.toggle('is-playing',s!==Screen.LEVEL);
+  for(const [id,screen] of Object.entries({levelView:Screen.LEVEL,wordView:Screen.WORD,chestView:Screen.CHEST,rewardView:Screen.REWARD,collectionView:Screen.COLLECTION})) $(id).hidden=s!==screen;
+  $('blendButton').hidden=s!==Screen.WORD || state.blended;
+  $('readButton').hidden=s!==Screen.WORD || !state.blended;
+  $('soundButton').hidden=s!==Screen.WORD || !state.blended;
+  $('nextButton').hidden=s!==Screen.REWARD;
+  $('restartButton').hidden=s!==Screen.COLLECTION;
+  $('counter').hidden=s===Screen.LEVEL;
+  $('changeLevelButton').hidden=s===Screen.LEVEL;
+  $('collectionShelf').hidden=s===Screen.LEVEL || s===Screen.COLLECTION;
+  $('progressTrack').hidden=s===Screen.LEVEL;
+  $('startButton').disabled=false;
+  $('changeLevelButton').textContent='Change focus';
+  $('score').textContent=state.collected.length;
+  $('total').textContent=cards.length || chosenLesson.words.length;
+  $('collectionCount').textContent=`${state.collected.length} of ${cards.length || chosenLesson.words.length}`;
+  $('progressBar').style.transform=`scaleX(${cards.length ? state.collected.length/cards.length : 0})`;
+  $('nextButton').textContent=state.currentIndex===cards.length-1?'See my treasures':'Next word';
+  if(s===Screen.WORD) renderWord();
+  if(s===Screen.REWARD) {
+    const reward=cards[state.currentIndex].reward;
+    applySprite($('rewardSprite'),reward);
+    $('rewardName').textContent=reward.name;
+    $('rewardText').textContent='Another word practised. Another treasure!';
+  }
+  if(s===Screen.COLLECTION) {
+    $('finalSummary').textContent=`${cards.length} words practised: ${chosenLesson.words.map(parts=>parts.join('')).join(', ')}. Focus: ${chosenLesson.focus}. An adult checks the reading; this is not a test score.`;
+    renderCollection('fullCollection',true);
+  }
+  if(s!==Screen.LEVEL && s!==Screen.COLLECTION) renderCollection('collectionList',false);
+}
+function startGame() {
+  const prizes=shuffle(rewards);
+  // Stay within one taught correspondence/skill, in an authored order.
+  cards=chosenLesson.words.map((parts,i)=>({parts,reward:prizes[i]}));
+  state={screen:Screen.WORD,currentIndex:0,collected:[],blended:false};
+  render();announce(`${chosenLesson.focus}. Say the sounds, then blend the word.`);$('blendButton').focus();
+}
+function showWholeWord() {
+  if(state.screen!==Screen.WORD || state.blended) return;
+  state.blended=true;render();announce('Now read the whole word aloud.');$('readButton').focus();
+}
+function showSounds() {
+  if(state.screen!==Screen.WORD || !state.blended) return;
+  state.blended=false;render();announce('Try the sound clues again. Ask an adult to help if needed.');$('blendButton').focus();
+}
+function confirmRead() {
+  if(state.screen!==Screen.WORD || !state.blended) return;
+  state.screen=Screen.CHEST;render();announce('Practice recorded. Open your chest.');$('chestButton').focus();
+}
+function openChest() {
+  if(state.screen!==Screen.CHEST) return;
+  state.collected.push(cards[state.currentIndex].reward);state.screen=Screen.REWARD;render();
+  announce(`Treasure: ${cards[state.currentIndex].reward.name}. ${state.collected.length} of ${cards.length}.`);$('nextButton').focus();
+}
+function advance() {
+  if(state.screen!==Screen.REWARD) return;
+  if(state.currentIndex===cards.length-1) {
+    state.screen=Screen.COLLECTION;render();announce('Practice complete. Here are your treasures.');$('finalTitle').focus();
+  } else {
+    state.currentIndex++;state.blended=false;state.screen=Screen.WORD;render();$('blendButton').focus();
+  }
+}
+function chooseAnotherLevel() {
+  if(![Screen.LEVEL,Screen.COLLECTION].includes(state.screen) && !window.confirm('Changing focus ends this practice and clears its treasures. Continue?')) return;
+  cards=[];state={screen:Screen.LEVEL,currentIndex:0,collected:[],blended:false};render();
+  announce('Choose a focus with sounds your child already knows.');practiceSelect.focus();
+}
+levelButtons.forEach(button=>button.addEventListener('click',()=>selectStage(button.dataset.level)));
+practiceSelect.addEventListener('change',()=>{
+  chosenLesson=chosenStage.lessons.find(lesson=>lesson.id===practiceSelect.value)||chosenStage.lessons[0];
+  updateFocus();announce(`${chosenLesson.focus}. ${chosenLesson.words.length} words to practise.`);
+});
+$('startButton').addEventListener('click',startGame);
+$('blendButton').addEventListener('click',showWholeWord);
+$('soundButton').addEventListener('click',showSounds);
+$('readButton').addEventListener('click',confirmRead);
+$('chestButton').addEventListener('click',openChest);
+$('nextButton').addEventListener('click',advance);
+$('restartButton').addEventListener('click',startGame);
+$('changeLevelButton').addEventListener('click',chooseAnotherLevel);
+$('languageSelect').addEventListener('change',()=>{
+  const target=$('languageSelect').value;
+  if(!['/','/es/','/fr/','/ru/'].includes(target)) return;
+  if(![Screen.LEVEL,Screen.COLLECTION].includes(state.screen) && !window.confirm('Changing language ends this practice and clears its treasures. Continue?')) {
+    $('languageSelect').value='/';return;
+  }
+  window.location.assign(target);
+});
+updateFocus();render();
 
-    function buildCards(difficulty) {
-      const words = shuffle(wordBanks[difficulty]).slice(0, SESSION_WORD_COUNT);
-      const shuffledRewards = shuffle(rewards);
-      return words.map((parts, index) => ({ parts, reward: shuffledRewards[index] }));
-    }
-
-    function spritePosition(index) {
-      const column = index % 4;
-      const row = Math.floor(index / 4);
-      return `${column * 100 / 3}% ${row * 100 / 3}%`;
-    }
-
-    function applySprite(element, reward) {
-      element.style.backgroundImage = `url("${atlasFiles[reward.atlas]}")`;
-      element.style.backgroundPosition = spritePosition(reward.sprite);
-    }
-
-    function createSprite(reward) {
-      const sprite = document.createElement("span");
-      sprite.className = "sprite";
-      sprite.setAttribute("aria-hidden", "true");
-      applySprite(sprite, reward);
-      return sprite;
-    }
-
-    function renderWord() {
-      const parts = cards[state.currentIndex].parts;
-      const fragment = document.createDocumentFragment();
-
-      syllables.replaceChildren();
-      syllables.classList.toggle("is-four", parts.length === 4);
-      syllables.classList.toggle("is-long", parts.length >= 5);
-
-      parts.forEach((part, index) => {
-        const syllable = document.createElement("span");
-        syllable.className = "syllable";
-        syllable.textContent = part;
-        fragment.append(syllable);
-
-        if (index < parts.length - 1) {
-          const dash = document.createElement("span");
-          dash.className = "dash";
-          dash.textContent = "-";
-          fragment.append(dash);
-        }
-      });
-
-      syllables.append(fragment);
-    }
-
-    function renderReward() {
-      const reward = cards[state.currentIndex].reward;
-      applySprite(rewardSprite, reward);
-      rewardName.textContent = reward.name;
-      rewardText.textContent = reward.text;
-    }
-
-    function renderCollectionShelf() {
-      collectionList.replaceChildren();
-
-      if (state.collected.length === 0) {
-        const empty = document.createElement("li");
-        empty.className = "collection-empty";
-        empty.textContent = "Open your first chest to start your collection";
-        collectionList.append(empty);
-        return;
-      }
-
-      state.collected.forEach((reward, index) => {
-        const item = document.createElement("li");
-        item.className = "loot-thumb";
-        item.title = `${index + 1}. ${reward.name}`;
-
-        if (state.screen === Screen.REWARD && index === state.collected.length - 1) {
-          item.classList.add("is-new");
-        }
-
-        const label = document.createElement("span");
-        label.className = "sr-only";
-        label.textContent = `${index + 1}. ${reward.name}`;
-        item.append(createSprite(reward), label);
-        collectionList.append(item);
-      });
-    }
-
-    function renderFullCollection() {
-      fullCollection.replaceChildren();
-
-      state.collected.forEach((reward, index) => {
-        const item = document.createElement("li");
-        item.className = "collection-card";
-
-        const name = document.createElement("p");
-        name.className = "collection-card-name";
-        name.textContent = `${index + 1}. ${reward.name}`;
-
-        item.append(createSprite(reward), name);
-        fullCollection.append(item);
-      });
-    }
-
-    function render() {
-      const { screen, currentIndex, collected, difficulty } = state;
-      const choosingLevel = screen === Screen.LEVEL;
-      const cardCount = cards.length;
-
-      trainer.classList.toggle("is-playing", !choosingLevel);
-      levelView.hidden = !choosingLevel;
-      wordView.hidden = screen !== Screen.WORD;
-      chestView.hidden = screen !== Screen.CHEST;
-      rewardView.hidden = screen !== Screen.REWARD;
-      collectionView.hidden = screen !== Screen.COLLECTION;
-      readButton.hidden = screen !== Screen.WORD;
-      nextButton.hidden = screen !== Screen.REWARD;
-      restartButton.hidden = screen !== Screen.COLLECTION;
-      counter.hidden = choosingLevel;
-      changeLevelButton.hidden = choosingLevel;
-      collectionShelf.hidden = choosingLevel || screen === Screen.COLLECTION;
-      progressTrack.hidden = choosingLevel;
-      startButton.disabled = !pendingDifficulty;
-
-      score.textContent = collected.length;
-      total.textContent = cardCount;
-      collectionCount.textContent = `${collected.length} of ${cardCount}`;
-      progressBar.style.transform = `scaleX(${cardCount ? collected.length / cardCount : 0})`;
-      nextButton.textContent = currentIndex === cardCount - 1
-        ? "See all rewards"
-        : "Next word";
-
-      if (difficulty) {
-        changeLevelButton.textContent = `${difficulties[difficulty].label} · change`;
-        finalSummary.textContent = `You read ${cardCount} words in the ${difficulties[difficulty].label} level and completed your collection!`;
-      }
-
-      if (screen === Screen.WORD) renderWord();
-      if (screen === Screen.REWARD) renderReward();
-      if (screen === Screen.COLLECTION) renderFullCollection();
-      if (!choosingLevel) renderCollectionShelf();
-    }
-
-    function startGame(difficulty) {
-      if (!wordBanks[difficulty]) return;
-
-      pendingDifficulty = difficulty;
-      cards = buildCards(difficulty);
-      state = {
-        screen: Screen.WORD,
-        currentIndex: 0,
-        collected: [],
-        difficulty
-      };
-      render();
-      announcer.textContent = `Level ${difficulties[difficulty].label} selected. A new game has started.`;
-      readButton.focus();
-    }
-
-    function chooseAnotherLevel() {
-      cards = [];
-      pendingDifficulty = null;
-      levelButtons.forEach((button) => button.setAttribute("aria-pressed", "false"));
-      state = {
-        screen: Screen.LEVEL,
-        currentIndex: 0,
-        collected: [],
-        difficulty: null
-      };
-      render();
-      announcer.textContent = "Choose an age for a new game.";
-      levelButtons[0].focus();
-    }
-
-    function confirmRead() {
-      if (state.screen !== Screen.WORD) return;
-      state.screen = Screen.CHEST;
-      render();
-      chestButton.focus();
-    }
-
-    function openChest() {
-      if (state.screen !== Screen.CHEST) return;
-
-      const reward = cards[state.currentIndex].reward;
-      state.screen = Screen.REWARD;
-      state.collected.push(reward);
-      render();
-      announcer.textContent = `Reward unlocked: ${reward.name}. Collected ${state.collected.length} of ${cards.length}.`;
-      nextButton.focus();
-    }
-
-    function advance() {
-      if (state.screen !== Screen.REWARD) return;
-
-      if (state.currentIndex === cards.length - 1) {
-        state.screen = Screen.COLLECTION;
-        render();
-        announcer.textContent = `All ${cards.length} rewards collected. Your full collection is open.`;
-        finalTitle.focus();
-        return;
-      }
-
-      state.currentIndex += 1;
-      state.screen = Screen.WORD;
-      render();
-      readButton.focus();
-    }
-
-    function restart() {
-      startGame(state.difficulty);
-    }
-
-    levelButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        pendingDifficulty = button.dataset.level;
-        levelButtons.forEach((option) => {
-          option.setAttribute("aria-pressed", String(option === button));
-        });
-        startButton.disabled = false;
-        announcer.textContent = `Level ${difficulties[pendingDifficulty].label} selected. Press Start reading.`;
-      });
-    });
-    startButton.addEventListener("click", () => startGame(pendingDifficulty));
-    readButton.addEventListener("click", confirmRead);
-    chestButton.addEventListener("click", openChest);
-    nextButton.addEventListener("click", advance);
-    restartButton.addEventListener("click", restart);
-    changeLevelButton.addEventListener("click", chooseAnotherLevel);
-
-
-    const languageSelect = document.querySelector('#languageSelect');
-    languageSelect.addEventListener('change', () => {
-      const target = languageSelect.value;
-      if (!["/","/es/","/fr/","/ru/"].includes(target)) return;
-      if (state.screen !== Screen.LEVEL && state.screen !== Screen.COLLECTION && !window.confirm("Changing language starts a new session. Continue?")) {
-        languageSelect.value = "/";
-        return;
-      }
-      window.location.assign(target);
-    });
-
-    render();
   </script>
 </body>
 </html>
