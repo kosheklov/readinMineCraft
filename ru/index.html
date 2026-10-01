@@ -1185,6 +1185,7 @@
   </main>
 
   <script src="/reward-themes.js"></script>
+  <script src="words/daily.js?v=1"></script>
   <script>
     const METRIKA_ID = 112668334;
 
@@ -1368,7 +1369,9 @@
     }
 
     function buildCards(difficulty) {
-      const words = shuffle(wordBanks[difficulty]).slice(0, SESSION_WORD_COUNT);
+      const words = window.RCKDailyWords
+        ? window.RCKDailyWords.select(difficulty, SESSION_WORD_COUNT)
+        : wordBanks[difficulty].slice(0, SESSION_WORD_COUNT);
       const shuffledRewards = window.RCKThemes ? window.RCKThemes.rewards(rewards,words.length) : shuffle(rewards);
       return words.map((parts, index) => ({ parts, reward: shuffledRewards[index] }));
     }
