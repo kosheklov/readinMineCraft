@@ -13,31 +13,28 @@ const api = client();
 const normal = value => JSON.parse(JSON.stringify(value));
 const levels = ['easy', 'medium', 'hard'];
 
-test('all 108 original words are preserved and exactly 1000 additions are documented', () => {
-  const html = readFileSync(new URL('../ru/index.html', import.meta.url), 'utf8');
-  const source = html.split('const wordBanks = Object.freeze(')[1].split('\n    });')[0] + '\n}';
-  const original = vm.runInNewContext(`(${source})`);
-  const oldWords = new Set(Object.values(original).flat().map(p => p.join('')));
-  const additions = readFileSync(new URL('../ru/words/new-words.txt', import.meta.url), 'utf8')
-    .split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('['))
-    .join(' ').split(/\s+/).map(word => word.replaceAll('-', ''));
-  assert.equal(oldWords.size, 108);
-  assert.equal(additions.length, 1000);
-  assert.equal(new Set(additions).size, 1000);
-  assert.ok(additions.every(word => !oldWords.has(word)));
-  for (const level of levels) {
-    const words = new Set(api.bank[level].map(p => p.join('')));
-    assert.ok(original[level].every(p => words.has(p.join(''))));
+test('beginner words use an explicit reviewed list, not a length heuristic', () => {
+  const approved = readFileSync(new URL('../ru/words/easy-reviewed.txt', import.meta.url), 'utf8')
+    .split('\n').filter(line => line && !line.startsWith('#'));
+  assert.equal(approved.length, 69);
+  assert.deepEqual(normal(api.bank.easy.map(parts => parts.join('-'))), approved);
+  for (const parts of api.bank.easy) {
+    assert.doesNotMatch(parts.join(''), /[бвгджзклмнпрстфхцчшщ]{2}|[ьъ]/u);
+    assert.ok(parts.length <= 3);
   }
-  assert.equal(api.bank.easy.length, 336);
-  assert.equal(api.bank.medium.length, 486);
-  assert.equal(api.bank.hard.length, 286);
+  for (const word of ['счёт', 'вихрь', 'трюм', 'клёст']) {
+    assert.ok(!api.bank.easy.some(parts => parts.join('') === word));
+  }
+  for (let day = 1; day <= 70; day++) {
+    const order = api.select('easy', 30, new Date(Date.UTC(2026, 9, day))).map(parts => parts.length === 2 ? 0 : parts.length === 1 ? 1 : 2);
+    assert.deepEqual(normal(order), normal([...order].sort()));
+  }
 });
 
-test('1108 unique Russian words with one vowel in every authored syllable', () => {
+test('1119 unique Russian words with one vowel in every authored syllable', () => {
   const words = Object.values(api.bank).flat();
-  assert.equal(words.length, 1108);
-  assert.equal(new Set(words.map(parts => parts.join(''))).size, 1108);
+  assert.equal(words.length, 1119);
+  assert.equal(new Set(words.map(parts => parts.join(''))).size, 1119);
   for (const parts of words) {
     for (const part of parts) {
       assert.match(part, /^[а-яё]+$/u);

@@ -35,7 +35,15 @@ function select(level, count = 30, date = new Date()) {
     throw new RangeError('Invalid session size');
   }
   const start = ((dayNumber(date) - EPOCH_DAY) * count % words.length + words.length) % words.length;
-  return Array.from({ length: count }, (_, i) => [...words[(start + i) % words.length]]);
+  const selected = Array.from({ length: count }, (_, i) => [...words[(start + i) % words.length]]);
+  // Start with two open syllables, then short closed words, then three syllables.
+  // Sorting changes presentation only, preserving daily membership and rotation.
+  if (level === 'easy') selected.sort((a, b) => easyOrder(a) - easyOrder(b));
+  return selected;
 }
 
-root.RCKDailyWords = Object.freeze({ select, dayNumber, bank, timeZone: 'Europe/Moscow', version: 1 });
+function easyOrder(parts) {
+  return parts.length === 2 ? 0 : parts.length === 1 ? 1 : 2;
+}
+
+root.RCKDailyWords = Object.freeze({ select, dayNumber, bank, timeZone: 'Europe/Moscow', version: 2 });
